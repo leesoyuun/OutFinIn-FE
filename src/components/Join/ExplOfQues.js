@@ -10,6 +10,7 @@ const ExplContainer = styled.div`
     font-weight: 700;
     line-height: normal;
     letter-spacing: 0.048px;
+    white-space: pre-line;
 `
 
 const ExplOfQues = (props) => {

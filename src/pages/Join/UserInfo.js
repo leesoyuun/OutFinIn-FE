@@ -129,7 +129,7 @@ const UserInfo = () => {
                         choose={choose}
                         selected={natural}
                         bodyDescribe={'목이 가늘고 긴 편 둥글고 얇은 어깨\n상반신 보다 하반신 볼륨이 발달'}/>
-                    <Link to="../getstyle" style={{ textDecoration: 'none' }}>
+                    <Link to="../getstyle">
                         <ButtonBottom content={'다음'} />
                     </Link>
                 </f.ScreenJoin>
