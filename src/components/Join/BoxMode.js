@@ -33,9 +33,9 @@ const ModeDescribe = styled.div`
 `;
 
 const BoxMode = (props) => {
-
     const ChangeBox = () => {
-        props.mode === '아우터 모드' ? props.choose(1) : props.choose(2)
+        props.mode === '아우터 모드' ? props.choose(1) : props.choose(2);
+        props.mode === '아우터 모드' ? localStorage.setItem('mode', 1) : localStorage.setItem('mode',2) 
     }
     return(
         <Box mode={props.mode}

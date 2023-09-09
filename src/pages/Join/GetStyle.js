@@ -48,10 +48,11 @@ const GetStyle = () => {
                             <ButtonNumbers content={3} isSelected={true}/>
                             <ButtonNumbers content={4}/>
                         </f.Flex>
-                        {/*여기 수정해주기!! 코디네이터냐 user냐에 따라 내용만 다르게 뜨게. 일단은 코디네이터 입장*/}
-                        <QuestionMode content={'코디네이터님이 추구하는\n 스타일은 어떤 느낌일까요?'} marginBottom={'6px'}/> 
-                        {/*여기 수정해주기!! 코디네이터냐 user냐에 따라 내용만 다르게 뜨게. 일단은 코디네이터 입장*/}
-                        <ExplOfQues content={'코디 받고 싶은 스타일을 다양하게 등록하면\n 코디네이터에게 쉽게 도움 받을 수 있습니다'}/>
+                        <QuestionMode content={localStorage.getItem('mode') == 1?
+                        '코디네이터님이 추구하는\n 스타일은 어떤 느낌일까요?' : '회원님이 코디 받고 싶은\n스타일을 골라주세요!'} marginBottom={'6px'}/> 
+                        <ExplOfQues content={localStorage.getItem('mode') == 1?
+                        '코디 하고 싶은 스타일을 다양하게\n등록할 수록 더 많은 도움을 줄 수있습니다':
+                        '코디 받고 싶은 스타일을 다양하게 등록하면\n 아우터에게 쉽게 도움 받을 수 있습니다'}/>
                         {/*스타일 박스들*/}
                         <StyleBoxContainer>
                             {styleOptions.map((style, index) => (
