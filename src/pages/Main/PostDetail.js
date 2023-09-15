@@ -30,10 +30,13 @@ const Grade = styled.div`
     letter-spacing: 0.048px;
     white-space: nowrap;
 `
+<<<<<<< HEAD
 const GradeSection=styled.div`
     display: flex;
     align-items: center;
 `
+=======
+>>>>>>> 12f7775 (test)
 const GradeIcon = styled.img`
     margin-right: 7px;
 `;
@@ -44,7 +47,6 @@ const GradeBar = styled.div`
     background: #C4C4C4;
     margin: 0px 0px 0px 18px;
 `
-
 const CoordinatorIntro = styled.div`
     font-size: 14px;
     font-style: normal;
@@ -62,7 +64,6 @@ const ReviewText = styled.div`
     margin-top: 4.26vh;
     margin-bottom: 1.77vh;
 `
-
 const PostDetail = () => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 가져오기
 
