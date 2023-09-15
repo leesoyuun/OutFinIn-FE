@@ -30,13 +30,10 @@ const Grade = styled.div`
     letter-spacing: 0.048px;
     white-space: nowrap;
 `
-<<<<<<< HEAD
 const GradeSection=styled.div`
     display: flex;
     align-items: center;
 `
-=======
->>>>>>> 12f7775 (test)
 const GradeIcon = styled.img`
     margin-right: 7px;
 `;
