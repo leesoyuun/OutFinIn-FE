@@ -1,18 +1,14 @@
 import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import styled from "styled-components";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Navigation from "../../components/Navigation/Navigation";
+import GobackContainer from "../../components/Common/GobackContainer";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
 import ReviewBox from "../../components/MainPage/ReviewBox";
 import Grades from '../../components/MainPage/Grades';
 import goback from '../../assets/img/goback.svg'
-
-const GobackContainer=styled.div`
-  margin-top:36px;
-  margin-bottom: 8px;
-`
 
 const CoordinatorIntro = styled.div`
     font-size: 14px;
@@ -32,19 +28,11 @@ const ReviewText = styled.div`
     margin-bottom: 1.77vh;
 `
 const PostDetail = () => {
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 가져오기
-
-  const handleGoBack = () => {
-    navigate(-1); // 이전 페이지로 이동 (-1은 이전 페이지를 가리킵니다)
-  }
     return(
     <f.Totalframe>
       <f.SubScreen>
         <f.ScreenComponent>
-          <GobackContainer>
-              <img src={goback} onClick={handleGoBack} />
-          </GobackContainer>
-
+          <GobackContainer />
           {/* 코디네이터 프로필 */}
           <CoordinatorInfo name={"웜톤 천재 아우터"}/>
           <Grades/>

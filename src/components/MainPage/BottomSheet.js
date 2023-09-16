@@ -14,6 +14,7 @@ const StyledModalBackground = styled.div`
   opacity: 0.5;
   z-index: 1;
 `;
+
 const StyledBottomSheet = styled.div`
   z-index: 2;
   position: fixed;

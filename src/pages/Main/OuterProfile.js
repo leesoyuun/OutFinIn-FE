@@ -1,10 +1,11 @@
 import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import styled from "styled-components";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Navigation from "../../components/Navigation/Navigation";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
+import GobackContainer from "../../components/Common/GobackContainer";
 import Grades from "../../components/MainPage/Grades";
 import ReviewBox from "../../components/MainPage/ReviewBox";
 import PostMainImg from "../../components/MainPage/PostMainImg";
@@ -13,10 +14,6 @@ import goback from "../../assets/img/goback.svg";
 
 import sample from "../../assets/img/sample.svg";
 
-const GobackContainer=styled.div`
-  margin-top:36px;
-  margin-bottom: 8px;
-`
 
 const Grade = styled.div`
     display: flex;
@@ -73,7 +70,6 @@ const PostList=styled.div`
 `
 
 const OuterProfile = () => {
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 가져오기
   const [dragging, setDragging] = useState(false);
   const [clickPoint, setClickPoint] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -98,16 +94,12 @@ const OuterProfile = () => {
       containerRef.current.scrollLeft = scrollLeft - walk;
     }
   }
-  const handleGoBack = () => {
-    navigate(-1); // 이전 페이지로 이동 (-1은 이전 페이지를 가리킵니다)
-  }
+
     return(
     <f.Totalframe>
       <f.SubScreen>
         <f.ScreenComponent>
-          <GobackContainer>
-              <img src={goback} onClick={handleGoBack} />
-          </GobackContainer>
+          <GobackContainer />
           {/* 코디네이터 프로필 */}
           <CoordinatorInfo name={"웜톤 천재 아우터"}/>
           <Grades/>
