@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Navigation from "../../components/Navigation/Navigation";
 import * as f from "../../components/Common/CommonStyle";
 import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox";
-import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";  
+import GobackContainer from "../../components/Common/GobackContainer";
+import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
 import BottomSheet from "../../components/MainPage/BottomSheet";
 import smallFind from "../../assets/img/smallFind.svg";
@@ -30,11 +31,6 @@ const Filters = styled.div`
     display: none;
   }
 
-`;
-
-const GobackContainer = styled.img`
-  margin-top:36px;
-  margin-bottom: 8px;
 `;
 
 const SearchBox = styled.div`
@@ -91,7 +87,7 @@ const Search = () => {
     <f.Totalframe>
       <f.SubScreen>
         <f.ScreenComponent>
-          <GobackContainer src={goback}/>
+          <GobackContainer />
           <SearchBox>
             <img src={smallFind}/>
             <SearchInput placeholder="찾고있는 스타일이 있나요?" onClick={openBottomSheet}/>

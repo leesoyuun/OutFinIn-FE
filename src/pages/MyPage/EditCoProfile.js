@@ -5,17 +5,13 @@ import AWS from 'aws-sdk'
 import axios from "axios";
 import * as f from '../../components/Common/CommonStyle';
 import * as c from '../../components/Join/CoInfoStyle';
+import GobackContainer from "../../components/Common/GobackContainer";
 import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox";
 import ButtonBottom from '../../components/Common/ButtonBottom';
 import GetInfo from "../../components/Join/GetInfo";
 import profileCircle from '../../assets/img/profileCircle.svg';
 import camera from '../../assets/img/camera.svg';
 import goback from "../../assets/img/goback.svg";
-
-const GobackContainer=styled.div`
-  margin-top:36px;
-  margin-bottom: 8px;
-`
 
 const Male = styled.div`
     display: flex;
@@ -62,7 +58,6 @@ const HashTag = styled.div`
 `;
 
 const EditCoProfile = () => {
-    const navigate = useNavigate();
     const [male, setMale] = useState(false);
     const [female, setFemale] = useState(false);
     const [inputCount, setInputCount] = useState(0);
@@ -221,16 +216,10 @@ const EditCoProfile = () => {
         setWeight(e.target.value);
     }
 
-    const handleGoBack = () => {
-        navigate(-1); 
-    }
-
     return (
         <f.Totalframe>
             <f.ScreenComponent>
-                <GobackContainer>
-                    <img src={goback} onClick={handleGoBack} />
-                </GobackContainer>
+                <GobackContainer />
                 {/*사진 수정하기*/}
                 <input
                     type="file"

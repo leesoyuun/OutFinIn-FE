@@ -14,6 +14,7 @@ export const Totalframe = styled.div`
 
 export const ScreenComponent = styled.div`
   padding: 0px 18px;
+  position: relative;
 `;
 
 export const SubScreen = styled.div`

@@ -1,7 +1,8 @@
 import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
+import GobackContainer from "../../components/Common/GobackContainer";
 import styled from "styled-components";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Navigation from "../../components/Navigation/Navigation";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import PostMainImg from "../../components/MainPage/PostMainImg";
@@ -11,12 +12,6 @@ import Grades from "../../components/MainPage/Grades";
 // 지울거. 샘플이미지
 import logo from "../../assets/img/logo.svg";
 import sample from "../../assets/img/sample.svg";
-import goback from "../../assets/img/goback.svg"
-
-const GobackContainer=styled.div`
-  margin-top:36px;
-  margin-bottom: 8px;
-`
 
 const Category = styled.div`
   margin-top: 15px;
@@ -105,7 +100,6 @@ const PostImg=styled.img`
 `
 
 const OuterMyPage = () => {
-  const navigate = useNavigate();
   const [dragging, setDragging] = useState(false);
   const [clickPoint, setClickPoint] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -131,16 +125,11 @@ const OuterMyPage = () => {
     }
   }
 
-  const handleGoBack = () => {
-    navigate(-1); 
-  }
     return(
     <f.Totalframe>
       <f.SubScreen>
         <f.ScreenComponent>
-          <GobackContainer>
-              <img src={goback} onClick={handleGoBack} />
-          </GobackContainer>
+          <GobackContainer />
           {/* 코디네이터 프로필 */}
           <CoordinatorInfo name={"웜톤 천재 아우터"}/>
           <Grades/>

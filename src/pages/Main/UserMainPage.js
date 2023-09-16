@@ -87,8 +87,10 @@ const UserMainPage = () => {
           </HashTag>
           {/* 코디네이터 프로필 */}
           <CoordinatorProfile>
-            <CoordinatorMainImg/>
             <Link to='/postdetail'>
+            <CoordinatorMainImg/>
+            </Link>
+            <Link to='/outerprofile'>
               <CoordinatorInfo name={"웜톤 천재 아우터"}/>
             </Link>
           </CoordinatorProfile>
