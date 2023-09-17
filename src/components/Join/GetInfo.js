@@ -10,12 +10,12 @@ const InputInfos = styled.div`
     padding: 10px 0px 10px 8px;
     font-size: 14px;
     font-weight: 700;
-    margin-right: ${(props)=> (props.infoName == '키' || props.infoName == '닉네임' ? '20px' : '0px')};
+    margin-right: ${(props)=> (props.infoName == '키' ? '20px' : '0px')};
     margin-top: ${(props)=> (props.infoName == '키' || props.infoName == '체중' ? '17px' : '0px')};
 `;
 
 const InputInfo = styled.input`
-    width: ${(props)=>(props.infoName == '닉네임' ? '52px' : '35px')};
+    width: 80px;
     border: none;
     outline: none;
     text-align: right;
@@ -42,7 +42,7 @@ const InputUnit = styled.div`
 const GetInfo = (props) => {
     
     return(
-        <InputInfos infoName={props.infoName}>{props.infoName}
+        <InputInfos infoName={props.infoName} ref={props.check}>{props.infoName}
             <InputUnit>
                 <InputInfo value={props.inputValue} onChange={props.changeValue} infoName={props.infoName}></InputInfo>
                 <Unit active={props.inputValue !== ""}>{props.unit}</Unit>

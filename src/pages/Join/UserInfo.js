@@ -1,6 +1,7 @@
-import React,{ useState } from "react";
+import React,{ useState, useRef, useEffect } from "react";
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import axios from "axios";
 import * as f from '../../components/Common/CommonStyle';
 import ButtonBottom from '../../components/Common/ButtonBottom';
 import ButtonNumbers from '../../components/Join/NumbersButton';
@@ -9,6 +10,7 @@ import BodyTpye from "../../components/Join/BodyType";
 import bodyStraight from '../../assets/img/bodyStraight.svg';
 import bodyWave from '../../assets/img/bodyWave.svg';
 import bodyNatural from '../../assets/img/bodyNatural.svg';
+import {AiOutlineCheckCircle} from 'react-icons/ai';
 import GetInfo from "../../components/Join/GetInfo";
 
 const BodyTypeText = styled.div`
@@ -37,6 +39,7 @@ const Male = styled.div`
 `
 
 const Female = styled.div`
+    margin-left: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,12 +54,57 @@ const Female = styled.div`
     font-weight: 700;
     letter-spacing: 0.175px;
 `
+
+const InputContaier=styled.div`
+    display: flex;
+    align-items: center;
+`
 const UserInfo = () => {
     const [straight,setStraight] = useState(false);
     const [wave,setWave] = useState(false);
     const [natural,setNatural] = useState(false);
     const [male, setMale] = useState(false);
     const [female, setFemale] = useState(false);
+    const [pass, setPass] = useState(false);
+    const [nickname, setNickname] = useState("");
+
+    const [checkNickname, setCheckNickname] = useState("");
+    const nicknameRef = useRef(null);
+
+    const handleClickOutside = async ({ target }) => {
+        console.log("handleClickOutside 실행");
+        console.log(nickname);
+
+        if (nicknameRef.current && !nicknameRef.current.contains(target) && checkNickname !== nickname) {
+            // axios 코드 작성 하면 됨
+            async function fetchNickname(){
+                try {
+                    axios.defaults.withCredentials=true;
+                    const res = await axios.get("http://localhost:8080/check/nickname?nickname="+ nickname);
+    
+                    if(res.data === 'available') {
+                        setPass(true);
+                        setCheckNickname(nickname); // 검사를 완료한 닉네임
+                        console.log(nickname);
+                    } else {
+                        setPass(false);
+                    }
+                  } catch (error) {
+                    console.error(error);
+                  }
+            }
+    
+            fetchNickname();
+        }
+    };
+    
+
+    useEffect(() => {
+        window.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            window.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [nickname]);
 
     const choose = (x) => {
         if(x === 1){
@@ -72,6 +120,10 @@ const UserInfo = () => {
             setWave(false);
             setNatural(true);
         }
+    }
+
+    const changeNickname = (e) => {
+        setNickname(e.target.value);
     }
 
     const changeGender = (g) => {
@@ -95,15 +147,16 @@ const UserInfo = () => {
                     </f.Flex>
                     <QuestionMode content={'더 정확한 추천을 위해 회원님의 \n 정보를 수집하고 있어요'} marginBottom={'2.87vh'}/>
                     {/* 개인정보 입력 */}
-                    <f.Flex>
-                        <GetInfo infoName={'닉네임'}/>
+                    <InputContaier>
+                        <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef} />
+                        <AiOutlineCheckCircle fill={pass? '#4F44E2' : '#C9C5CA'}/>
                         <Female 
                             onClick={() => changeGender(2)}
                             selected={female}>여</Female>
                         <Male 
                             onClick={() => changeGender(1)}
                             selected={male}>남</Male>
-                    </f.Flex>
+                    </InputContaier>
                     <f.Flex>
                         <GetInfo infoName={'키'} unit={'cm'}/>
                         <GetInfo infoName={'체중'} unit={'kg'}/>

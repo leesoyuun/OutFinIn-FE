@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 import AWS from 'aws-sdk'
 import axios from "axios";
+import Session from 'react-session-api';
 import * as f from '../../components/Common/CommonStyle';
 import * as c from '../../components/Join/CoInfoStyle';
 import ButtonBottom from '../../components/Common/ButtonBottom';
@@ -10,9 +11,11 @@ import ButtonNumbers from '../../components/Join/NumbersButton';
 import QuestionMode from '../../components/Join/QuestionModeBox';
 import GetInfo from "../../components/Join/GetInfo";
 import profileCircle from '../../assets/img/profileCircle.svg';
+import {AiOutlineCheckCircle} from 'react-icons/ai';
 import camera from '../../assets/img/camera.svg';
 
 const Male = styled.div`
+    margin-left: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,6 +47,15 @@ const Female = styled.div`
     letter-spacing: 0.175px;
 `
 
+const NickName=styled.div`
+    display: flex;
+`
+
+const InputContaier=styled.div`
+    display: flex;
+    align-items: center;
+`
+
 const CoInfo = () => {
     AWS.config.update({
         region: "ap-northeast-2",
@@ -62,6 +74,47 @@ const CoInfo = () => {
     const [gender, setGender] = useState("");
     const [height, setHeight] = useState("");
     const [weight, setWeight] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [pass, setPass] = useState(false);
+
+    const [checkNickname, setCheckNickname] = useState("");
+    const nicknameRef = useRef(null);
+
+    const handleClickOutside = async ({ target }) => {
+        console.log("handleClickOutside 실행");
+        console.log(nickname);
+
+        if (nicknameRef.current && !nicknameRef.current.contains(target) && checkNickname !== nickname) {
+            // axios 코드 작성 하면 됨
+            async function fetchNickname(){
+                try {
+                    axios.defaults.withCredentials=true;
+                    const res = await axios.get("http://localhost:8080/check/nickname?nickname="+ nickname);
+    
+                    if(res.data === 'available') {
+                        setPass(true);
+                        setCheckNickname(nickname); // 검사를 완료한 닉네임
+                        console.log(nickname);
+                    } else {
+                        setPass(false);
+                    }
+                  } catch (error) {
+                    console.error(error);
+                  }
+            }
+    
+            fetchNickname();
+        }
+    };
+    
+
+    useEffect(() => {
+        window.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            window.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [nickname]);
 
     const [image, setImage] = useState({
         image_file: null,
@@ -110,7 +163,8 @@ const CoInfo = () => {
                     try {
                         const res = await axios.post('http://localhost:8080/coordinator/profile',
                             {
-                                coordinator_id: 1,
+                                email: email,
+                                password: password,
                                 nickname: nickname,
                                 sns_url: sns_url,
                                 image_url: data.Location,
@@ -200,15 +254,16 @@ const CoInfo = () => {
                         </c.GetPhotoContainer>
                     </c.Label>
                     {/*정보 입력받기*/}
-                    <f.Flex>
-                        <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} />
+                    <InputContaier>
+                        <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef}/>
+                        <AiOutlineCheckCircle fill={pass ? '#4F44E2' : '#C9C5CA'}/>
                         <Male
                             onClick={() => changeGender(1)}
                             selected={male}>남</Male>
                         <Female
                             onClick={() => changeGender(2)}
                             selected={female}>여</Female>
-                    </f.Flex>
+                    </InputContaier>
                     <f.Flex>
                         <GetInfo infoName={'키'} unit={'cm'} changeValue={changeHeight} inputValue={height} />
                         <GetInfo infoName={'체중'} unit={'kg'} changeValue={changeWeight} inputValue={weight} />
