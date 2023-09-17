@@ -60,13 +60,13 @@ const GetStyle = () => {
                                 <GetStyleBox key={index} content={style} isSelected={selectedStyles.includes(style)} onClick={() => handleStyleClick(style)} />
                             ))}
                         </StyleBoxContainer>
-                        
-                        
-                        <Link to="../joinsuccess" style={{ textDecoration: 'none' }}>
-                            <ButtonBottom content={'다음'} />
-                        </Link>
                     </f.ScreenJoin>
                 </f.ScreenComponent>
+                <ButtonContainer>
+                    <Link to="../joinsuccess" style={{ textDecoration: 'none' }}>
+                        <ButtonBottom content={'다음'} />
+                    </Link>
+                </ButtonContainer>
             </f.SubScreen>
         </f.Totalframe>
     )
@@ -74,7 +74,10 @@ const GetStyle = () => {
 
 const StyleBoxContainer = styled.div`
     margin: 0 auto;
-    height: full;
+`
+
+const ButtonContainer=styled.div`
+    margin-left: 18px;
 `
 
 export default GetStyle;
