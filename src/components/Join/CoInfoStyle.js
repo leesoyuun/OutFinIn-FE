@@ -33,7 +33,6 @@ export const Camera=styled.img`
 
 
 export const TextContainer = styled.div`
-    width: 100%;
     margin-top: 2.96vh;
     position:relative; 
     display:inline-block; 
@@ -49,7 +48,6 @@ export const TextArea = styled.textarea`
     border: 1px solid #C8C5D0;
     background: #FFF;
     width: 100%;
-    resize: none;
     &::placeholder{
 		color: #C8C5D0;
         font-size: 14px;

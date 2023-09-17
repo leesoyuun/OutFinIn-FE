@@ -11,6 +11,10 @@ const Hanger3DImg = styled.img`
     margin: 0 auto;
 `;
 
+const ButtonContainer=styled.div`
+    margin-left: 18px;
+`
+
 const JoinSuccess = () => {
     
     return(
@@ -28,13 +32,16 @@ const JoinSuccess = () => {
                         '회원가입이 완료 되었습니다!\n 오늘도 예쁜 코디 부탁드려요':
                         '회원가입이 완료 되었습니다! \n오늘도 딱 맞는 코디 받으세요'} marginBottom={'2.96vh'}/>
                         <Hanger3DImg src={Hanger3D}></Hanger3DImg> 
-                        <Link to={localStorage.getItem('mode') == 1 ? 
-                        "../outermainpage":
-                        "../usermainpage"} style={{ textDecoration: 'none' }}>
-                            <ButtonBottom content={'시작하기'} />
-                        </Link>
                     </f.ScreenJoin>
+                    
                 </f.ScreenComponent>
+                <ButtonContainer>
+                    <Link to={localStorage.getItem('mode') == 1 ? 
+                            "../outermainpage":
+                            "../usermainpage"} style={{ textDecoration: 'none' }}>
+                                <ButtonBottom content={'시작하기'} />
+                    </Link>
+                </ButtonContainer>
             </f.SubScreen>
         </f.Totalframe>
     )

@@ -45,6 +45,12 @@ const Female = styled.div`
 `
 
 const CoInfo = () => {
+    AWS.config.update({
+        region: "ap-northeast-2",
+        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    });
+
     const [male, setMale] = useState(false);
     const [female, setFemale] = useState(false);
     const [inputCount, setInputCount] = useState(0);
@@ -77,69 +83,56 @@ const CoInfo = () => {
 
             reader.readAsDataURL(selectedFile);
         }
-    };
+    };    
 
     const handleImageUpload = () => {
-        console.log("제대로 된다.");
+        AWS.config.update({
+            region: "ap-northeast-2",
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+        });
 
-        async function fetchImage() {
-            AWS.config.update({
-                region: "ap-northeast-2",
-                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-            });
-            try {
-                const handleFileInput = async () => {
-                    const file = image.image_file;
+        try {
+            const file = image.image_file;
 
-                    const upload = new AWS.S3.ManagedUpload({
-                        params: {
-                            Bucket: "seumu-s3-bucket", // 버킷 이름
-                            Key: "test.jpeg", // 파일 이름 (버킷 안에서 저장될 파일 이름)
-                            Body: file, // 파일 객체
-                        },
-                    });
-
-                    const promise = upload.promise();   // 반환값을 받음
-
-                    promise.then((data) => {
-                        // 여기에 axios 코드 만들어서 백으로 넘기면 됨
-                        setImage_url(data.Location);
-                    });
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        }
-
-        async function fetchData() {
-            try {
-                const res = await axios.post('http://localhost:8080/coordinator/profile', 
-                {
-                    coordinator_id: 1,
-                    nickname: nickname,
-                    sns_url: sns_url,
-                    image_url: image_url,
-                    content: content,
-                    gender: male === true ? 'MALE' : 'FEMALE',
-                    height: height,
-                    weight: weight,
-                    total_like: 0,
-                    request_count: 0
+            const upload = new AWS.S3.ManagedUpload({
+                params: {
+                    Bucket: "seumu-s3-bucket", // 버킷 이름
+                    Key: "test.jpeg", // 파일 이름 (버킷 안에서 저장될 파일 이름)
+                    Body: file, // 파일 객체
                 },
-                {
-                    headers: { 'Content-Type': 'application/json'},
+            });
+
+            const promise = upload.promise();   // 반환값을 받음
+
+            promise.then((data) => {
+                async function fetchData() {
+                    try {
+                        const res = await axios.post('http://localhost:8080/coordinator/profile',
+                            {
+                                coordinator_id: 1,
+                                nickname: nickname,
+                                sns_url: sns_url,
+                                image_url: data.Location,
+                                content: content,
+                                gender: male === true ? 'MALE' : 'FEMALE',
+                                height: height,
+                                weight: weight,
+                                total_like: 0,
+                                request_count: 0
+                            }
+                        );
+                        console.log(res);
+                    } catch (error) {
+                        console.error(error);
+                    }
                 }
-                );
 
-                console.log(res);
-            } catch (error) {
-                console.error(error);
-            }
+                fetchData();
+            });
+        } catch (e) {
+            console.log(e);
         }
-
-        fetchImage();
-        fetchData();
     };
 
     const changeGender = (g) => {

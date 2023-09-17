@@ -4,7 +4,6 @@ import * as c from '../../components/Join/CoInfoStyle';
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
 import GobackContainer from "../../components/Common/GobackContainer";
-import PostMainImg from "../../components/MainPage/PostMainImg";
 import Navigation from "../../components/Navigation/Navigation";
 import addTag from "../../assets/img/addTag.svg";
 
@@ -53,6 +52,81 @@ const PostList=styled.div`
   &::-webkit-scrollbar{
     display:none;
   }
+`
+
+const TextContainer = styled.div`
+  width: 100%;
+  position:relative; 
+  display:inline-block; 
+  margin-bottom: 30px;
+`
+const TextArea=styled.textarea`
+  padding: 20px 15px 60px 15px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  border: 1px solid #C8C5D0;
+  background: #FFF;
+  width: 100%;
+  height: 300px;
+  resize: none;
+  &::placeholder{
+  color: #C8C5D0;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 0.175px;
+  }
+  &:focus {
+    outline: none;
+    border: 2px solid #100069;
+  }
+`
+const TitleContainer=styled.input`
+  margin: 16px 0;
+  padding: 8px 15px;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--material-theme-sys-light-outline-variant, #C8C5D0);
+  color: var(--material-theme-ref-neutral-neutral-70, #ADAAAF);
+  font-family: Noto Sans CJK KR;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  &::placeholder{
+    color: var(--material-theme-ref-neutral-neutral-70, #ADAAAF);
+    font-family: Noto Sans CJK KR;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.2px;
+  }
+  &:focus {
+    outline: none; 
+    border-bottom: 2px solid #100069;
+  }
+`
+
+const FinishBotton=styled.button`
+  display: flex;
+  width: 354px;
+  height: 60px;
+  padding: 5px 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background: #100069;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: normal;
+  letter-spacing: 0.08px;
+  text-decoration: none;
+  margin-bottom: 37px;
 `
 
 const WriteNewPost = () => {
@@ -106,14 +180,17 @@ const WriteNewPost = () => {
                 <Photo src={logo}></Photo>
               </PostList>
             </PhotoContainer>
-
+            {/* 글 제목 */}
+            <TitleContainer placeholder="코디 제목을 작성해주세요" />
             {/* 글 작성 */}
-            <c.TextContainer>
-              <c.TextArea placeholder="아우터님의 코디를 설명해주세요" />
-            </c.TextContainer>
-            {/* 글 작성 완료 버튼*/}
+            <TextContainer>
+              <TextArea placeholder="아우터님의 코디를 설명해주세요" />
+            </TextContainer>
 
-
+        {/* 글 작성 완료 버튼*/}
+        <Link to="../postdetail">
+          <FinishBotton>작성 완료</FinishBotton>
+        </Link>
         </f.ScreenComponent>
       </f.SubScreen>
       <Navigation />
