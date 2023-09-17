@@ -1,11 +1,65 @@
 import React,{ useRef,useState,useEffect } from "react";
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as f from '../../components/Common/CommonStyle';
 import ButtonBottom from '../../components/Common/ButtonBottom';
 import QuestionMode from '../../components/Join/QuestionModeBox';
+import eyeUnfilled from '../../assets/img/eyeUnfilled.svg';
+import eyeFilled from '../../assets/img/eyeFilled.svg';
 import {AiOutlineCheckCircle} from 'react-icons/ai';
 import axios from "axios";
+
+const InputContainer=styled.div`
+    display: flex;
+    flex-direction:column;
+    gap: 9.5px;
+    margin-top: 18.5px;
+    position: relative;
+`
+const InputLabel=styled.label`
+    color: #000;
+    font-family: Noto Sans KR;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.175px;
+`
+const InputBox=styled.div`
+    display: flex;
+    gap: 10px;
+`
+const Input=styled.input`
+    display: flex;
+    width: 346px;
+    padding: 10px 32px 10px 10px;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #787680;
+    &::placeholder{
+        color: #ADAAAF;
+        font-family: Noto Sans KR;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: 0.175px;
+    }
+    &:focus {
+        outline: none; 
+        border: 1px solid #100069;
+    }
+`
+
+const EyeContainer=styled.div`
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+`
+
 const Email = styled.input`
     border-radius: 5px;
     border: 1px solid #100069;
@@ -83,6 +137,7 @@ const AuthenticateText = styled.div`
 
 
 const InputEmail = () => {
+    const navigate = useNavigate();
     const emailRef = useRef("");
     const [domain, setDomain] = useState('');
     const [checkFill, setCheckFill] = useState('#C9C5CA');
@@ -90,6 +145,23 @@ const InputEmail = () => {
     const [timer,setTimer] = useState(300);
     const [min,setMin] = useState(5);
     const [sec,setSec] = useState(0);
+    const [showpw, setShowpw] = useState(false);
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+
+    const ChangeShow= () => {
+        if (showpw){
+            setShowpw(false);
+        } else{
+            setShowpw(true);
+        }
+    }
+
+    const changePassword = (e) => {
+        setPassword(e.target.value);
+    }
 
     const sendDomain = (e) => {
         setDomain(e.target.value)
@@ -132,14 +204,16 @@ const InputEmail = () => {
         let code = e.target.value
         if(code.length == 4){
             let Email = emailRef.current.value + '@' + domain;
+
             async function fetchCode(){
                 try {
-                    const res = await axios.post("http://127.0.0.1:8080/email/code/auth",
+                    const res = await axios.post("http://localhost:8080/email/code/auth",
                     {
                         email : Email,
                         code : code
                     });
                     if(res.data == 'success!'){
+                        setEmail(Email);
                         setPass(true);
                     }
                 } catch (error) {
@@ -148,6 +222,26 @@ const InputEmail = () => {
             }
             fetchCode()
         }
+    }
+
+    const sendData = () => {
+        async function fetchData(){
+            try {
+                const res = await axios.post("http://localhost:8080/register",
+                {
+                    email : email,
+                    password : password
+                });
+
+                if(res.data === 'success') {
+                    navigate("/modechoice");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        fetchData();
     }
 
     return(
@@ -169,16 +263,28 @@ const InputEmail = () => {
                                 <option value="icloud.com">icloud.com</option>
                             </Domain>
                         </f.Flex>
-                        <AuthenticateCode>
-                            <AuthenticateInput placeholder="인증 코드를 입력해주세요" onChange={inputCode}></AuthenticateInput>
-                            <div style={{display:'flex'}}>
-                                <Time>{min}:{sec< 10 ? '0' + sec : sec}</Time>
-                                <AiOutlineCheckCircle fill={pass? '#4F44E2' : '#C9C5CA'}/>
-                            </div>
-                        </AuthenticateCode>
+                        {pass? (
+                            <InputContainer>
+                                <InputLabel>비밀번호</InputLabel>
+                                <InputBox>
+                                    <Input type={showpw ? 'text' : 'password'} placeholder="비밀번호를 입력해주세요" onChange={changePassword}></Input>
+                                    <EyeContainer onClick={ChangeShow}>
+                                        <img src={showpw? eyeFilled: eyeUnfilled}></img>
+                                    </EyeContainer>
+                                </InputBox>
+                            </InputContainer>
+                        ) : (
+                            <AuthenticateCode>
+                                <AuthenticateInput placeholder="인증 코드를 입력해주세요" onChange={inputCode}></AuthenticateInput>
+                                <div style={{display:'flex'}}>
+                                    <Time>{min}:{sec< 10 ? '0' + sec : sec}</Time>
+                                    <AiOutlineCheckCircle fill={pass? '#4F44E2' : '#C9C5CA'}/>
+                                </div>
+                            </AuthenticateCode>
+                        )}
                         <AuthenticateText onClick={sendEmail}>인증 코드를 못 받았아요</AuthenticateText>
-                        <Link onClick={sendEmail} to="/signup">
-                            <ButtonBottom content={pass? '다음' : '메일 받기'} />
+                        <Link onClick={pass ? sendData : sendEmail}>
+                            <ButtonBottom content={pass ? '다음' : '메일 받기'} />
                         </Link>
                     </f.ScreenJoin>
                 </f.ScreenComponent>

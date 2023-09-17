@@ -11,7 +11,6 @@ import Search from "./pages/Search/Search";
 import Chat from "./pages/Chat/Chat";
 import OuterMyPage from "./pages/MyPage/OuterMyPage";
 import EditCoProfile from "./pages/MyPage/EditCoProfile";
-import Signup from "./pages/Join/Signup";
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>} />
             <Route path="/inputemail" element={<InputEmail/>} />
-            <Route path="/signup" element={<Signup />} />
             <Route path="/modechoice" element={<ModeChoice/>}/>
             <Route path="/userinfo" element={<UserInfo/>}/>
             <Route path="/usermainpage" element={<UserMainPage/>}/>

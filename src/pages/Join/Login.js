@@ -1,11 +1,13 @@
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import {useState, useEffect, useRef} from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import * as f from '../../components/Common/CommonStyle';
 import ButtonBottom from '../../components/Common/ButtonBottom';
 import logo from "../../assets/img/logo.svg"
 import naver from "../../assets/img/naver.svg"
 import kakao from "../../assets/img/kakao.svg"
 import google from "../../assets/img/google.svg"
+import axios from "axios"
 
 const LoginContainer=styled.div`
     margin-top: 87.33px;
@@ -32,6 +34,8 @@ const GetInfoContainer=styled.div`
 `
 
 const InputInfo = styled.input`
+    border: none;
+    border-bottom: 2px solid var(--material-theme-sys-light-outline-variant, #C8C5D0);        
     padding: 10px;
     &::placeholder{
         color: var(--material-theme-ref-neutral-variant-neutral-variant-80, #C8C5D0);
@@ -41,6 +45,10 @@ const InputInfo = styled.input`
         font-weight: 400;
         line-height: normal;
         letter-spacing: 0.175px;
+    }
+    &:focus{
+        outline: none;
+        border-bottom: 2px solid #100069;
     }
     border-width: 0 0 1px;
     width: 100%;
@@ -83,6 +91,49 @@ const SignUp=styled.div`
 `
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
+    const idRef = useRef();
+
+    useEffect(() => {
+        idRef.current.focus();
+    }, [])
+
+    const changeId = (e) => {
+        setEmail(e.target.value);
+    }
+
+    const changePassword = (e) => {
+        setPassword(e.target.value);
+    }
+    
+    const loginHandler = () => {
+        async function fetchData(){
+            try {
+                const res = await axios.post("http://localhost:8080/login",
+                {
+                    email : email,
+                    password : password
+                });
+
+                if(res.data === 'success') {
+                    console.log(password);
+                    navigate('/outermainpage');
+                }else {
+                    console.log(res.data);
+                }
+
+                // res.data 가 outer, fiter 로 나눠서 보내줌
+                // 단, 실패 시 이메일이 틀린 경우: Email Not Found  /  비밀번호가 틀린 경우: Password Not Equal
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        fetchData();
+    }
 
     return(
         <f.Totalframe>
@@ -97,10 +148,10 @@ const Login = () => {
                         <LoginForm>
                             {/* 아이디, 비번 입력 */}
                             <GetInfoContainer>
-                                <InputInfo placeholder='아이디를 입력해주세요'/>
+                                <InputInfo type="text" placeholder='아이디를 입력해주세요' onChange={changeId} ref={idRef}/>
                             </GetInfoContainer>
                             <GetInfoContainer>
-                                <InputInfo placeholder='비밀번호를 입력해주세요'/>
+                                <InputInfo type="password" placeholder='비밀번호를 입력해주세요' onChange={changePassword} />
                             </GetInfoContainer>
                             {/* 소셜미디어 연동 */}
                             <SocialInfoContainer>
@@ -120,7 +171,7 @@ const Login = () => {
 
 
                     {/* 코드 수정-로그인 버튼 눌렀을 때, 로그인 성공이면 넘어가기!! 백엔드와 연동 */}
-                    <Link to="/main" style={{ textDecoration: 'none' }}>
+                    <Link onClick={loginHandler}>
                         <ButtonBottom content={'로그인'} />
                     </Link>
                 </f.ScreenComponent>
