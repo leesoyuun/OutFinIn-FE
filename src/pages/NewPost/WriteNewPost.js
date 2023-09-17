@@ -1,9 +1,9 @@
 import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
+import * as c from '../../components/Join/CoInfoStyle';
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
 import GobackContainer from "../../components/Common/GobackContainer";
-import ButtonBottom from '../../components/Common/ButtonBottom';
 import Navigation from "../../components/Navigation/Navigation";
 import addTag from "../../assets/img/addTag.svg";
 
