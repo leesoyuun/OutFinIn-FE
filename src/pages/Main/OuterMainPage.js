@@ -2,6 +2,7 @@ import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox";
 import plus from '../../assets/img/plus.svg';
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";

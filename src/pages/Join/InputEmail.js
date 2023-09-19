@@ -62,10 +62,21 @@ const EyeContainer=styled.div`
 
 const Email = styled.input`
     border-radius: 5px;
-    border: 1px solid #100069;
+    border: 1px solid ${props=> props.error? 'red': '#100069'};
     width: 151px;
     height: 35px;
     padding-left: 12px;
+    &:focus{
+        outline:none;
+    }
+`;
+
+const Domain = styled.select`
+    border-radius: 5px;
+    border: 1px solid ${props=> props.error? 'red': '#100069'};
+    width: 171px;
+    height: 35px;
+    padding: 7px 0px 8px 12px;
     &:focus{
         outline:none;
     }
@@ -82,16 +93,6 @@ const Dot = styled.div`
     letter-spacing: 0.175px;
 `;
 
-const Domain = styled.select`
-    border-radius: 5px;
-    border: 1px solid #100069;
-    width: 171px;
-    height: 35px;
-    padding: 7px 0px 8px 12px;
-    &:focus{
-        outline:none;
-    }
-`;
 
 const AuthenticateCode = styled.div`
     display:flex;
@@ -146,10 +147,9 @@ const InputEmail = () => {
     const [min,setMin] = useState(5);
     const [sec,setSec] = useState(0);
     const [showpw, setShowpw] = useState(false);
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const [duplicateEmail, setDuplicateEmail] = useState(false);
 
     const ChangeShow= () => {
         if (showpw){
@@ -169,15 +169,26 @@ const InputEmail = () => {
     
     const sendEmail = () => {
         let Email = emailRef.current.value + '@' + domain;
+        // 이메일 중복검사
         async function fetchEmail(){
             try {
                 axios.defaults.withCredentials=true;
                 const res = await axios.get("http://localhost:8080/email/code/send?email="+Email);
+                //중복되는 경우
+                if(res.data === 'duplicate') {
+                    emailRef.current.value='';
+                    setDuplicateEmail(true);
+                } 
+                // 중복되지 않는 경우 메일 전송
+                else{
+                    setTimer(timer => timer - 1);
+                    setDuplicateEmail(false);
+                }
               } catch (error) {
                 console.error(error);
-              }
-              setTimer(timer => timer - 1);
+              }              
         }
+
         fetchEmail();
     }
 
@@ -251,9 +262,9 @@ const InputEmail = () => {
                     <f.ScreenJoin>
                         <QuestionMode content={'서비스 이용 시작 전\n본인인증이 필요합니다.'} marginBottom={'6.27vh'}/>
                         <f.Flex>
-                            <Email placeholder="이메일 주소" ref={emailRef}></Email>
+                            <Email placeholder={duplicateEmail? "이미 가입한 이메일":"이메일 주소"} error={duplicateEmail} ref={emailRef}></Email>
                             <Dot>@</Dot>
-                            <Domain onChange={sendDomain}>
+                            <Domain onChange={sendDomain} error={duplicateEmail}>
                                 <option value="">이메일을 선택해주세요.</option>
                                 <option value="gmail.com">gmail.com</option>
                                 <option value="naver.com">naver.com</option>

@@ -24,10 +24,11 @@
 .mail_code{
     margin-top: 46px;
     color: #000;
-    font-size: 24px;
+    font-size: 36px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    text-decoration: underline;
 }
 footer{
     position: fixed;

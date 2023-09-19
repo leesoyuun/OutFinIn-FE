@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AWS from 'aws-sdk'
 import axios from "axios";
 import Session from 'react-session-api';
@@ -80,6 +80,7 @@ const CoInfo = () => {
 
     const [checkNickname, setCheckNickname] = useState("");
     const nicknameRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleClickOutside = async ({ target }) => {
         console.log("handleClickOutside 실행");
@@ -176,6 +177,10 @@ const CoInfo = () => {
                                 request_count: 0
                             }
                         );
+                        if (res.data === 'success') {
+                            navigate('./getstyle');
+                        }
+                        // 다음으로 넘어가게
                         console.log(res);
                     } catch (error) {
                         console.error(error);
@@ -276,9 +281,10 @@ const CoInfo = () => {
                         <c.TextArea onChange={changeContent} maxLength={maxInputLength} placeholder="프로필을 간단하게 적어주세요!" />
                         <c.TextCount><span>{inputCount}</span><span>/20 자</span></c.TextCount>
                     </c.TextContainer>
-                    <Link to="../getstyle">
-                        <ButtonBottom content={'다음'} sendInfo={handleImageUpload} type={'axios'}/>
-                    </Link>
+                    
+
+                        <ButtonBottom content={'다음'} sendInfo={handleImageUpload} type={pass ? 'axios' : 'none'}/>
+                   
                 </f.ScreenJoin>
             </f.ScreenComponent>
         </f.Totalframe>

@@ -8,6 +8,8 @@ import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
 import BottomSheet from "../../components/MainPage/BottomSheet";
 import axios from 'axios'; 
+
+
 const MainText = styled.div`
   color: #000;
   font-size: 24px;
