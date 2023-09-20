@@ -167,9 +167,9 @@ const InputEmail = () => {
         setDomain(e.target.value)
     }
     
+    // 이메일 중복검사와 코드 발송
     const sendEmail = () => {
         let Email = emailRef.current.value + '@' + domain;
-        // 이메일 중복검사
         async function fetchEmail(){
             try {
                 axios.defaults.withCredentials=true;
@@ -211,6 +211,7 @@ const InputEmail = () => {
         return () => clearInterval(id);
     }, [timer]);
 
+    // 코드 확인 
     const inputCode = (e) => {
         let code = e.target.value
         if(code.length == 4){
@@ -235,6 +236,7 @@ const InputEmail = () => {
         }
     }
 
+    // 코디네이터 이메일/ 비밀번호 전송
     const sendData = () => {
         async function fetchData(){
             try {

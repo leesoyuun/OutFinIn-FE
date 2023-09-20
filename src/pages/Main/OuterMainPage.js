@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
@@ -6,7 +6,6 @@ import axios from 'axios';
 import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox";
 import plus from '../../assets/img/plus.svg';
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
-import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
 import Navigation from "../../components/Navigation/Navigation";
 
 const MainText = styled.div`
@@ -36,7 +35,7 @@ const CoordinatorProfile = styled.div`
 const WriteButtonContainer=styled.div`
   position: absolute;
   right: 10px;
-  bottom: 9.53vh;
+  bottom: 2vh;
 `
 
 const OuterMainPage = () => {
@@ -44,8 +43,9 @@ const OuterMainPage = () => {
     const [dragging, setDragging] = useState(false);
     const [clickPoint, setClickPoint] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
-    
     const containerRef = useRef(null);
+
+    const [mainPage, setMainPage] = useState(null);
   
     const handelMouseDownEvent = (e) => {
       setDragging(true);
@@ -69,6 +69,21 @@ const OuterMainPage = () => {
       setSelectStyle(style);
     }
 
+    // 백엔드 통신
+    useEffect(()=>{
+      async function fetchMainPage(){
+        try{
+          axios.defaults.withCredentials=true;
+          const res = await axios.get("http://localhost:8080/main/coordinator");
+          setMainPage(res.data)
+          console.log(res.data);
+        }catch(error){
+          console.error(error);
+        }
+      }
+      fetchMainPage();
+    }, [])
+
     return(
     <f.Totalframe>
       <f.SubScreen>
@@ -87,26 +102,13 @@ const OuterMainPage = () => {
                 <BigStyleCategoryBox content={'+'}/>
           </HashTag>
           {/* 코디네이터 프로필 */}
-          <CoordinatorProfile>
-            <Link to='/outerprofile' name={"웜톤 천재 아우터"}>
-              <CoordinatorInfo name={"웜톤 천재 아우터"}/>
-            </Link>
-            <Link to='/outerprofile' name={"내가 짱"}>
-              <CoordinatorInfo name={"내가 짱"}/>
-            </Link>
-            <Link to='/outerprofile'>
-              <CoordinatorInfo name={"내 이름은 안지수"}/>
-            </Link>
-            <Link to='/outerprofile'>
-              <CoordinatorInfo name={"나는 이소윤"}/>
-            </Link>
-            <Link to='/outerprofile'>
-              <CoordinatorInfo name={"디자인 천재 이수정"}/>
-            </Link>
-            <Link to='/outerprofile'>
-              <CoordinatorInfo name={"슴우디 레츠고"}/>
-            </Link>
-          </CoordinatorProfile>
+          {mainPage?.map((data)=>(
+            <CoordinatorProfile>
+              <Link to='/outerprofile'>
+                <CoordinatorInfo name={data.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.profile_image} likeCnt={data.total_like} requestCnt={data.request_count} styles={data.styles}/>
+              </Link>
+            </CoordinatorProfile>
+          ))}
           {/* 글 작성 버튼 */}
           <WriteButtonContainer>
             <Link to="/writenewpost">

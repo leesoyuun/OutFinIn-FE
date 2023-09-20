@@ -1,4 +1,4 @@
-import { useState,useRef } from "react";
+import { useState,useRef, useEffect } from "react";
 import styled from 'styled-components';
 import { Link, useNavigate } from "react-router-dom";
 import AWS from 'aws-sdk'
@@ -11,9 +11,10 @@ import ButtonBottom from '../../components/Common/ButtonBottom';
 import GetInfo from "../../components/Join/GetInfo";
 import profileCircle from '../../assets/img/profileCircle.svg';
 import camera from '../../assets/img/camera.svg';
-import goback from "../../assets/img/goback.svg";
+import {AiOutlineCheckCircle} from 'react-icons/ai';
 
 const Male = styled.div`
+    margin-left: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,9 +56,15 @@ const HashTag = styled.div`
   &::-webkit-scrollbar{
     display:none;
   }
-`;
+`
+
+const InputContaier=styled.div`
+    display: flex;
+    align-items: center;
+`
 
 const EditCoProfile = () => {
+    const navigate = useNavigate();
     const [male, setMale] = useState(false);
     const [female, setFemale] = useState(false);
     const [inputCount, setInputCount] = useState(0);
@@ -72,8 +79,55 @@ const EditCoProfile = () => {
     const [dragging, setDragging] = useState(false);
     const [clickPoint, setClickPoint] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
-    
     const containerRef = useRef(null);
+    const [checkNickname, setCheckNickname] = useState("");
+    const nicknameRef = useRef(null);
+    const [pass, setPass] = useState(false);
+
+    // 사진 네이밍을 위한 포매팅
+    const today = new Date();
+    const year = today.getFullYear(); // 연도
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 1을 더하고 두 자리로 포맷팅)
+    const day = String(today.getDate()).padStart(2, '0'); // 일 (두 자리로 포맷팅)
+    const hours = String(today.getHours()).padStart(2, '0'); // 시간 (두 자리로 포맷팅)
+    const minutes = String(today.getMinutes()).padStart(2, '0'); // 분 (두 자리로 포맷팅)
+    const seconds = String(today.getSeconds()).padStart(2, '0'); // 초 (두 자리로 포맷팅)
+    const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
+    const [photoName,setPhotoName] = useState('');
+
+    // 닉네임 중복 검사 
+    const handleClickOutside = async ({ target }) => {
+        console.log(nickname);
+
+        if (nicknameRef.current && !nicknameRef.current.contains(target) && checkNickname !== nickname) {
+            // axios 코드 작성 하면 됨
+            async function fetchNickname(){
+                try {
+                    axios.defaults.withCredentials=true;
+                    const res = await axios.get("http://localhost:8080/check/nickname?nickname="+ nickname); 
+    
+                    if(res.data === 'available') {
+                        setPass(true);
+                        setCheckNickname(nickname); // 검사를 완료한 닉네임
+                        setPhotoName(nickname+formattedDate+'.jpg');
+                    } else {
+                        setPass(false);
+                    }
+                  } catch (error) {
+                    console.error(error);
+                  }
+            }
+    
+            fetchNickname();
+        }
+    };
+    
+    useEffect(() => {
+        window.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            window.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [nickname]);
   
     const handelMouseDownEvent = (e) => {
       setDragging(true);
@@ -83,6 +137,7 @@ const EditCoProfile = () => {
       }
     };
   
+    // 태그들 스크롤
     const handelMouseMoveEvent = (e) => {
       if(!dragging) return;
   
@@ -116,6 +171,7 @@ const EditCoProfile = () => {
         }
     };
 
+    // 사진 업로드
     const handleImageUpload = () => {
         console.log("제대로 된다.");
 
@@ -149,20 +205,20 @@ const EditCoProfile = () => {
             }
         }
 
+        // 코디네이터 프로필 편집
         async function fetchData() {
             try {
-                const res = await axios.post('http://localhost:8080/coordinator/profile', 
+                const res = await axios.post("http://localhost:8080/coordinator/edit", 
                 {
-                    coordinator_id: 1,
+                    id: 1,
                     nickname: nickname,
-                    sns_url: sns_url,
-                    image_url: image_url,
-                    content: content,
-                    gender: male === true ? 'MALE' : 'FEMALE',
                     height: height,
                     weight: weight,
-                    total_like: 0,
-                    request_count: 0
+                    gender: male === true ? 'MALE' : 'FEMALE',
+                    sns_url: sns_url,
+                    image_url: photoName,
+                    content: content,
+                    // "styles": Array(String)
                 },
                 {
                     headers: { 'Content-Type': 'application/json'},
@@ -252,15 +308,16 @@ const EditCoProfile = () => {
 
 
                 {/*정보 수정하기*/}
-                <f.Flex>
-                    <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} />
+                <InputContaier>
+                    <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef}/>
+                    <AiOutlineCheckCircle fill={pass ? '#4F44E2' : '#C9C5CA'}/>
                     <Male
                         onClick={() => changeGender(1)}
                         selected={male}>남</Male>
                     <Female
                         onClick={() => changeGender(2)}
                         selected={female}>여</Female>
-                </f.Flex>
+                </InputContaier>
                 <f.Flex>
                     <GetInfo infoName={'키'} unit={'cm'} changeValue={changeHeight} inputValue={height} />
                     <GetInfo infoName={'체중'} unit={'kg'} changeValue={changeWeight} inputValue={weight} />

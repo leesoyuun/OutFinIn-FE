@@ -81,6 +81,16 @@ const CoInfo = () => {
     const [checkNickname, setCheckNickname] = useState("");
     const nicknameRef = useRef(null);
     const navigate = useNavigate();
+    // 사진 네이밍을 위한 포매팅
+    const today = new Date();
+    const year = today.getFullYear(); // 연도
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 1을 더하고 두 자리로 포맷팅)
+    const day = String(today.getDate()).padStart(2, '0'); // 일 (두 자리로 포맷팅)
+    const hours = String(today.getHours()).padStart(2, '0'); // 시간 (두 자리로 포맷팅)
+    const minutes = String(today.getMinutes()).padStart(2, '0'); // 분 (두 자리로 포맷팅)
+    const seconds = String(today.getSeconds()).padStart(2, '0'); // 초 (두 자리로 포맷팅)
+    const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
+    const [photoName,setPhotoName] = useState('');
 
     const handleClickOutside = async ({ target }) => {
         console.log("handleClickOutside 실행");
@@ -96,7 +106,7 @@ const CoInfo = () => {
                     if(res.data === 'available') {
                         setPass(true);
                         setCheckNickname(nickname); // 검사를 완료한 닉네임
-                        console.log(nickname);
+                        setPhotoName(nickname+formattedDate+'.jpg');
                     } else {
                         setPass(false);
                     }
@@ -139,6 +149,7 @@ const CoInfo = () => {
         }
     };    
 
+    // 사진 s3에 업로드 후 링크받아와서, 백엔드에 코디네이터 정보들 넘겨주기
     const handleImageUpload = () => {
         AWS.config.update({
             region: "ap-northeast-2",
@@ -148,17 +159,17 @@ const CoInfo = () => {
 
         try {
             const file = image.image_file;
-
             const upload = new AWS.S3.ManagedUpload({
                 params: {
                     Bucket: "seumu-s3-bucket", // 버킷 이름
-                    Key: "test.jpeg", // 파일 이름 (버킷 안에서 저장될 파일 이름)
+                    Key:  photoName, // 파일 이름 (버킷 안에서 저장될 파일 이름)
                     Body: file, // 파일 객체
                 },
             });
 
             const promise = upload.promise();   // 반환값을 받음
 
+            // 코디네이터 중간 정보
             promise.then((data) => {
                 async function fetchData() {
                     try {
@@ -168,17 +179,18 @@ const CoInfo = () => {
                                 password: password,
                                 nickname: nickname,
                                 sns_url: sns_url,
-                                image_url: data.Location,
+                                image_url: photoName,
                                 content: content,
                                 gender: male === true ? 'MALE' : 'FEMALE',
                                 height: height,
                                 weight: weight,
                                 total_like: 0,
-                                request_count: 0
+                                request_count: 0,
+                                styles: []
                             }
                         );
                         if (res.data === 'success') {
-                            navigate('./getstyle');
+                            navigate('/getstyle');
                         }
                         // 다음으로 넘어가게
                         console.log(res);
