@@ -93,6 +93,7 @@ const AccountBox = styled.div`
   border: 1px solid #C8C5D0;
   margin-right: ${(props)=>props.logout ? '7.5px' : '0px' };
   margin-left: ${(props)=>props.delete ? '7.5px' : '0px' };
+  color: ${(props)=>props.delete ? '#690005': 'black'};
 `;
 const UserMyPage = () => {
   const [userMyPage,setUserMyPage] = useState('');

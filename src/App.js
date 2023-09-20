@@ -14,6 +14,8 @@ import OuterMyPage from "./pages/MyPage/OuterMyPage";
 import UserMyPage from "./pages/MyPage/UserMyPage";
 import EditCoProfile from "./pages/MyPage/EditCoProfile";
 import OuterRankInfo from "./pages/MyPage/OuterRankInfo";
+import CoAllCodies from "./pages/MyPage/CoAllCodies";
+import CoReviews from "./pages/MyPage/CoReviews";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route path="/usermypage" element={<UserMyPage />} />
             <Route path="/editcoprofile" element={<EditCoProfile />} />
             <Route path="/outerrankinfo" element={<OuterRankInfo/>}/>
+            <Route path="/coallcodies" element={<CoAllCodies/>}/>
+            <Route path="/coreviews" element={<CoReviews/>}/>
         </Routes>
       </Router>
     </div>

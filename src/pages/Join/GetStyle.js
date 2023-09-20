@@ -1,6 +1,7 @@
 import React,{ useState } from "react";
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import axios from 'axios';
 import * as f from '../../components/Common/CommonStyle';
 import ButtonBottom from '../../components/Common/ButtonBottom';
 import ButtonNumbers from '../../components/Join/NumbersButton';
@@ -9,6 +10,7 @@ import ExplOfQues from "../../components/Join/ExplOfQues";
 import GetStyleBox from "../../components/Join/GetStyleBox";
 
 const GetStyle = () => {
+    const navigate = useNavigate();
     const [selectedStyles, setSelectedStyles] = useState([]);
     const styleOptions = [
         '미니멀',
@@ -36,7 +38,27 @@ const GetStyle = () => {
         }
       }
 
-    
+    // 코디네이터 선호 스타일
+    const sendStyles = () => {
+        async function fetchData(){
+            try {
+                const res = await axios.post("http://localhost:8080/coordinator/styles",
+                {
+                    styles: selectedStyles
+                });
+
+                if(res.data === 'success') {
+                    navigate("/joinsuccess");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        fetchData();
+    }
+
+
     return (
         <f.Totalframe>
             <f.SubScreen>
@@ -63,7 +85,7 @@ const GetStyle = () => {
                     </f.ScreenJoin>
                 </f.ScreenComponent>
                 <ButtonContainer>
-                    <Link to="../joinsuccess" style={{ textDecoration: 'none' }}>
+                    <Link onClick={sendStyles} >
                         <ButtonBottom content={'다음'} />
                     </Link>
                 </ButtonContainer>

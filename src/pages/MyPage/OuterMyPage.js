@@ -1,61 +1,20 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import GobackContainer from "../../components/Common/GobackContainer";
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 import Navigation from "../../components/Navigation/Navigation";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
-import PostMainImg from "../../components/MainPage/PostMainImg";
-import SmallStyleCategoryBox from "../../components/Common/SmallStyleCategoryBox";
 import Grades from "../../components/MainPage/Grades";
+import Heart from "../../assets/img/mypage/heart.svg";
+import Hanger from "../../assets/img/mypage/hanger.svg";
+import Review from "../../assets/img/mypage/review.svg";
+import Outer from "../../assets/img/mypage/outer.svg";
 
 // 지울거. 샘플이미지
 import logo from "../../assets/img/logo.svg";
 import sample from "../../assets/img/sample.svg";
-
-const Category = styled.div`
-  margin-top: 15px;
-  margin-bottom: 11px;
-  color: #000;
-  font-family: Noto Sans CJK KR;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.175px;
-`;
-
-const PopularContainer=styled.div`
-`
-const EveryContainer=styled.div`
-  display: grid;
-  gap: 4px;
-  grid-template: repeat(4, 175px)/repeat(2, 175px);
-  margin-bottom: 20px;
-`
-
-const PostList=styled.div`
-  display: flex;
-  gap: 16px;  
-  cursor: pointer;  
-  white-space: nowrap;
-  overflow-x : auto;
-  -webkit-overflow-scrolling: touch;
-
-  &::-webkit-scrollbar{
-    display:none;
-  }
-`
-
-const CategoryContainer=styled.div`
-  display: flex;
-  jutify-content: space-between;
-  gap: 8px;
-  margin-top: 10px;
-  position: absolute;
-  left: 20px;
-  bottom: 10px;
-`
 
 const EditCotainer=styled.div`
   display: flex;
@@ -87,43 +46,64 @@ const CoordinatorIntro = styled.div`
     margin-bottom: 1.89vh;
 `;
 
-const PostContainer=styled.div`
-  position: relative;
-  width: 175px;
-  height: 175px;
-`
-const PostImg=styled.img`
-  width: 175px;
-  height: 175px;
-  border-radius: 18px;
-  object-fit: cover;
-`
+const MyPageMenu = styled.div`
+  border-top: ${(props) => (props.mycodi)? '1px solid #C8C5D0' : '0px'};
+  border-bottom: 1px solid #C8C5D0;
+  display: flex;
+  height: 5.71vh;
+  margin-top: ${(props) => (props.mycodi)? '2.13vh' : '0px'};
+  margin-bottom: ${(props)=>props.outer ? '20vh' : '0px' };
+  color: #000;
+`;
+const Icon = styled.img`
+  margin: 8px 12px 8px 8px;
+`;
+const MyPageDescribe = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.056px;
+`;
+
+const AccountBtns = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const AccountBox = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 8px 0px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid #C8C5D0;
+  margin-right: ${(props)=>props.logout ? '7.5px' : '0px' };
+  margin-left: ${(props)=>props.delete ? '7.5px' : '0px' };
+  color: ${(props)=>props.delete ? '#690005': 'black'};
+`;
 
 const OuterMyPage = () => {
-  const [dragging, setDragging] = useState(false);
-  const [clickPoint, setClickPoint] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [outerMyPage,setOuterMyPage] = useState('');
+
+  // 백엔드 통신
+  useEffect(()=>{
+    async function fetchMainPage(){
+      try{
+        axios.defaults.withCredentials=true;
+        const res = await axios.get("http://localhost:8080/coordinator/mypage?id="+1);
+        setOuterMyPage(res.data)
+      }catch(error){
+        console.error(error);
+      }
+    }
+    fetchMainPage();
+  }, [])
   
   const containerRef = useRef(null);
-
-  const handelMouseDownEvent = (e) => {
-    setDragging(true);
-    if(containerRef.current){
-      setClickPoint(e.pageX);
-      setScrollLeft(containerRef.current.scrollLeft);
-    }
-  };
-
-  const handelMouseMoveEvent = (e) => {
-    if(!dragging) return;
-
-    e.preventDefault();
-
-    if(containerRef.current){
-      const walk = e.pageX - clickPoint;
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
-  }
 
     return(
     <f.Totalframe>
@@ -131,62 +111,42 @@ const OuterMyPage = () => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={"웜톤 천재 아우터"}/>
-          <Grades/>
+          <CoordinatorInfo name={outerMyPage.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+outerMyPage.image_url} likeCnt={outerMyPage.total_like} requestCnt={outerMyPage.request_count} styles={outerMyPage.styles}/>
+          <Grades />
+          {/* 마이페이지 내용 */}
+          <CoordinatorIntro>
+          안녕하세요 저는 패션디자인과를 졸업한 아우터입니다. 주로 아이돌 코디를 전담했었습니다.
+          </CoordinatorIntro>
           {/* 프로필 편집 버튼 */}
           <Link to="/editcoprofile">
             <EditCotainer>
               <EditContent>프로필 편집</EditContent>
             </EditCotainer>
           </Link>
-          {/* 마이페이지 내용 */}
-          <CoordinatorIntro>
-          안녕하세요 저는 패션디자인과를 졸업한 아우터입니다. 주로 아이돌 코디를 전담했었습니다.
-          </CoordinatorIntro>
-          {/* 인기코디 */}
-          <Category>인기 코디</Category>
-          <PopularContainer>
-            <PostList ref={containerRef}
-              onMouseDown={handelMouseDownEvent}
-              onMouseLeave={() => setDragging(false)}
-              onMouseUp={() => setDragging(false)}
-              onMouseMove={handelMouseMoveEvent}>
-              <PostMainImg image={logo} name={'미니멀코디'} like={12340}/>
-              <PostMainImg image={sample} name={'비지니스 캐주얼 코디'} like={12340}/>  
-              <PostMainImg image={logo} name={'시티보이 코디'} like={12340}/> 
-            </PostList>
-          </PopularContainer>
-
-          {/* 전체코디 */}
-          <Category>전체 코디</Category>
-          <EveryContainer>
-            <PostContainer>
-              <PostImg src={logo} />
-              <CategoryContainer>
-                <SmallStyleCategoryBox content={'#미니멀'}></SmallStyleCategoryBox>
-                <SmallStyleCategoryBox content={'#시티보이'}></SmallStyleCategoryBox>
-              </CategoryContainer> 
-            </PostContainer>
-            <PostContainer>
-              <PostImg src={logo} />
-              <CategoryContainer>
-                <SmallStyleCategoryBox content={'#미니멀'}></SmallStyleCategoryBox>
-                <SmallStyleCategoryBox content={'#미니멀'}></SmallStyleCategoryBox>
-              </CategoryContainer>
-            </PostContainer>
-            <PostContainer>
-              <PostImg src={logo} />
-            </PostContainer>
-            <PostContainer>
-              <PostImg src={sample} />
-            </PostContainer>
-            <PostContainer>
-              <PostImg src={sample} />
-            </PostContainer>
-            <PostContainer>
-              <PostImg src={sample} />
-            </PostContainer>
-          </EveryContainer>
+          {/* 마이페이지 메뉴 */}
+          <Link to="/coallcodies">
+            <MyPageMenu mycodi>
+              <Icon src={Hanger}/>
+              <MyPageDescribe>내가 진행한 코디</MyPageDescribe>
+            </MyPageMenu>
+          </Link>
+          <Link to="/coreviews">
+            <MyPageMenu>
+              <Icon src={Review}/>
+              <MyPageDescribe>내가 받은 리뷰 보기</MyPageDescribe>
+            </MyPageMenu>
+          </Link>
+          <Link to={'/outerrankinfo'}>
+            <MyPageMenu outer>
+              <Icon src={Outer}/>
+              <MyPageDescribe>아우터 랭킹별 정찰제</MyPageDescribe>
+            </MyPageMenu>
+          </Link>
+          {/* 로그아웃, 계정삭제 버튼 */}
+          <AccountBtns>
+              <AccountBox logout>로그아웃</AccountBox>
+              <AccountBox delete>계정삭제</AccountBox>
+          </AccountBtns>
 
         </f.ScreenComponent>
       </f.SubScreen>
