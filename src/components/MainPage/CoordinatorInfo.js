@@ -80,10 +80,6 @@ const CategoryBox = styled.div`
     margin-top: 1.18vh;
 `
 const CoordinatorInfo = (props) => {
-<<<<<<< Updated upstream
-=======
-    // 온 클릭 함수
->>>>>>> Stashed changes
 
     return(
         <CoordinatorInfos>
