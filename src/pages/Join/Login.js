@@ -120,10 +120,12 @@ const Login = () => {
 
                 if(res.data === 'coordinator') {
                     console.log(password);
+                    localStorage.setItem('mode', 1)
                     navigate('/outermainpage');
                 }
                 else if(res.data === 'user') {
                     console.log(password);
+                    localStorage.setItem('mode', 2)
                     navigate('/usermainpage');
                 }else {
                     console.log(res.data);

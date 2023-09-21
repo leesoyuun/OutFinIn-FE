@@ -34,6 +34,7 @@ const ModeChoice = () =>{
                         <Link to='/coinfo'>
                             <BoxMode
                                 mode={'아우터 모드'} 
+                                role={'코디네이터'}
                                 choose={choose}
                                 selected={coordinate}
                                 describe={'나만의 코디를 업로드 하고 다른\n피터의 코디도 진행해보세요'}/>
@@ -41,6 +42,7 @@ const ModeChoice = () =>{
                         <Link to='/userinfo'>
                             <BoxMode
                                 mode={'피터 모드'} 
+                                role={'유저'}
                                 choose={choose}
                                 selected={user}
                                 describe={'옷 고르기 힘들때 아우터에게\n도움을 요청해 보세요'}/>

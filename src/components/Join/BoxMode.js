@@ -6,7 +6,7 @@ import user from '../../assets/img/user.svg';
 const Box = styled.div`
     display:flex;
     justify-content: space-between;
-    height: 19.9vh;
+    height: 23.9vh;
     border-radius: 15px;
     color: ${(props) => (props.active ? '#FFF' : '#000')};
     background: ${(props) => (props.active ? '#100069' : '#E4E1EC')};
@@ -19,8 +19,18 @@ const ModeName = styled.div`
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0.03px;
-    margin-bottom: 5.21vh;
 `;
+
+const ModeRole=styled.div`
+    color: #928F9A;
+    font-family: Noto Sans KR;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.021px;
+    margin-bottom: 4.21vh;
+`
 
 const ModeDescribe = styled.div`
     position: absolute;
@@ -28,10 +38,14 @@ const ModeDescribe = styled.div`
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 0.04px;
-    margin-bottom: 2.84vh;
+    margin-bottom: 3.84vh;
     white-space: pre-line;
 `;
 
+const ModeImg=styled.img`
+    width: 130px;
+    height: 130px;
+`
 const BoxMode = (props) => {
     const ChangeBox = () => {
         props.mode === '아우터 모드' ? props.choose(1) : props.choose(2);
@@ -40,12 +54,14 @@ const BoxMode = (props) => {
     return(
         <Box mode={props.mode}
             active={props.selected}
+            role={props.role}
             onClick={ChangeBox}>
             <div>
                 <ModeName>{props.mode}</ModeName>
+                <ModeRole>{props.role}</ModeRole>
                 <ModeDescribe>{props.describe}</ModeDescribe>
             </div>
-            <img src={props.mode === '아우터 모드'? coordinate : user}/> 
+            <ModeImg src={props.mode === '아우터 모드'? coordinate : user}></ModeImg>
         </Box>
         
     )
