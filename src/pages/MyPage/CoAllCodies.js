@@ -51,13 +51,13 @@ const PostImg=styled.img`
 `
 
 const CoAllCodies = () => {
-  const [allCodies,setAllCodies] = useState('');
+  const [allCodies,setAllCodies] = useState([]);
   // 백엔드 통신 (이 페이지 렌더링 되자마자 모든 게시물 보여주게끔 useEffect에)
   useEffect(()=>{
     async function fetchshowCodies(){
       try{
         axios.defaults.withCredentials=true;
-        const res = await axios.get("http://localhost:8080/coordinator/all/board?id="+1); 
+        const res = await axios.get("http://localhost:8080/coordinator/board/all"); 
         setAllCodies(res.data)
       }catch(error){
         console.error(error);

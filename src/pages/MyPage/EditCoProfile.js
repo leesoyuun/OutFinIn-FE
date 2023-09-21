@@ -96,6 +96,53 @@ const EditCoProfile = () => {
     const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
     const [photoName,setPhotoName] = useState('');
 
+    // 코디네이터 프로필 편집 초기 정보 지정 상태
+    const [initialInfo,setInitialInfo] = useState({
+        nickname: "",
+        height: "",
+        weight: "",
+        gender: "",
+        shape: "",
+        styles: [],
+    });
+
+    // 코디네이터 프로필 편집 들어가면 정보 보내기
+    useEffect(() => {
+        async function fetchShowData() {
+            try {
+                axios.defaults.withCredentials = true;
+                const res = await axios.get("http://localhost:8080/coordinator/info");
+                setInitialInfo(res.data);
+                // 여기서 받아온 정보를 해당 입력창에 설정해줄 수 있습니다.
+                setNickname(res.data.nickname);
+                setHeight(res.data.height);
+                setWeight(res.data.weight);
+                setImage_url("https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+res.data.image_url);
+                setSns_url(res.data.sns_url);
+                setContent(res.data.content);
+                // 성별 설정
+                if (res.data.gender === 'MALE') {
+                    setMale(true);
+                } else if (res.data.gender === 'FEMALE') {
+                    setFemale(true);
+                }
+                // 스타일 설정
+                setStyles(res.data.styles);
+
+                console.log(res.data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchShowData();
+    }, []);
+
+    useEffect(() => {
+        if(photoName === '') return;
+
+        setImage_url(photoName);
+    }, [photoName])
+
     // 닉네임 중복 검사 
     const handleClickOutside = async ({ target }) => {
         console.log(nickname);
@@ -166,6 +213,7 @@ const EditCoProfile = () => {
                     image_file: selectedFile,
                     preview_URL: e.target.result,
                 });
+
             };
 
             reader.readAsDataURL(selectedFile);
@@ -176,37 +224,7 @@ const EditCoProfile = () => {
     const handleImageUpload = () => {
         console.log("제대로 된다.");
 
-        async function fetchImage() {
-            AWS.config.update({
-                region: "ap-northeast-2",
-                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-            });
-            try {
-                const handleFileInput = async () => {
-                    const file = image.image_file;
-
-                    const upload = new AWS.S3.ManagedUpload({
-                        params: {
-                            Bucket: "seumu-s3-bucket", // 버킷 이름
-                            Key: "test.jpeg", // 파일 이름 (버킷 안에서 저장될 파일 이름)
-                            Body: file, // 파일 객체
-                        },
-                    });
-
-                    const promise = upload.promise();   // 반환값을 받음
-
-                    promise.then((data) => {
-                        // 여기에 axios 코드 만들어서 백으로 넘기면 됨
-                        setImage_url(data.Location);
-                    });
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        }
-
-        // 코디네이터 프로필 편집
+        // 코디네이터 프로필 편집-수정
         async function fetchData() {
             try {
                 const res = await axios.post("http://localhost:8080/coordinator/edit", 
@@ -221,19 +239,49 @@ const EditCoProfile = () => {
                     content: content,
                     styles: styles
                 },
-                {
-                    headers: { 'Content-Type': 'application/json'},
-                }
                 );
-
-                console.log(res);
+                if (res.data==='success'){
+                    navigate(-1);
+                } 
             } catch (error) {
                 console.error(error);
             }
         }
 
-        fetchImage();
-        fetchData();
+        async function fetchImage() {
+            AWS.config.update({
+                region: "ap-northeast-2",
+                accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+            });
+
+            try {
+                const handleFileInput = async () => {
+                    const file = image.image_file;
+
+                    const upload = new AWS.S3.ManagedUpload({
+                        params: {
+                            Bucket: "seumu-s3-bucket", // 버킷 이름
+                            Key: photoName, // 파일 이름 (버킷 안에서 저장될 파일 이름)
+                            Body: file, // 파일 객체
+                        },
+                    });
+
+                    const promise = upload.promise();   // 반환값을 받음
+
+                    promise.then((data) => {
+                        // 여기에 axios 코드 만들어서 백으로 넘기면 됨
+                        fetchData();
+                    });
+                }
+
+                handleFileInput();
+            } catch (e) {
+                console.log(e);
+            }
+        }      
+
+        fetchImage();       
     };
 
     const changeGender = (g) => {
@@ -288,7 +336,7 @@ const EditCoProfile = () => {
                 <c.Label htmlFor="profileImageInput">
                     <c.GetPhotoContainer>
                         <c.Profile
-                            src={image.preview_URL || profileCircle}
+                            src={ image.preview_URL || image_url }
                         />
                         <c.Camera src={camera} />
                     </c.GetPhotoContainer>
@@ -302,7 +350,7 @@ const EditCoProfile = () => {
                     {styles?.map((data)=> (
                         <BigStyleCategoryBox content={data} isSelected={true}/>
                     ))}
-                    <BigStyleCategoryBox content={'+'}/>
+                    <BigStyleCategoryBox content={'+'} isSelected={true}/>
                 </HashTag>
 
 
@@ -326,12 +374,10 @@ const EditCoProfile = () => {
                 </f.Flex>
                 {/*프로필 내용 입력받기 (1/20)-20글자 이내*/}
                 <c.TextContainer>
-                    <c.TextArea onChange={changeContent} maxLength={maxInputLength} placeholder="프로필을 간단하게 적어주세요!" />
+                    <c.TextArea onChange={changeContent} maxLength={maxInputLength} value={content} placeholder="프로필을 간단하게 적어주세요!" />
                     <c.TextCount><span>{inputCount}</span><span>/20 자</span></c.TextCount>
                 </c.TextContainer>
-                <Link to="../getstyle">
-                    <ButtonBottom content={'저장'} sendInfo={handleImageUpload} type={'axios'}/>
-                </Link>
+                <ButtonBottom content={'저장'} sendInfo={handleImageUpload} type={'axios'}/>
             </f.ScreenComponent>
         </f.Totalframe>
     )

@@ -116,7 +116,7 @@ const OuterMyPage = () => {
           <Grades likeCnt={outerMyPage.total_like} requestCnt={outerMyPage.request_count} />
           {/* 마이페이지 내용 */}
           <CoordinatorIntro>
-          안녕하세요 저는 패션디자인과를 졸업한 아우터입니다. 주로 아이돌 코디를 전담했었습니다.
+          {outerMyPage.content}
           </CoordinatorIntro>
           {/* 프로필 편집 버튼 */}
           <Link to="/editcoprofile">
