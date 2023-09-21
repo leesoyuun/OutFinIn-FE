@@ -2,14 +2,18 @@ import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import * as c from '../../components/Join/CoInfoStyle';
 import styled from "styled-components";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import GobackContainer from "../../components/Common/GobackContainer";
+import BottomSheetSingle from "../../components/MainPage/BottomSheetSingle";
 import Navigation from "../../components/Navigation/Navigation";
 import addTag from "../../assets/img/addTag.svg";
+import addPost from "../../assets/img/addPost.png";
+import axios from 'axios';
 
 // 지울거. 샘플이미지
 import logo from "../../assets/img/logo.svg";
 import sample from "../../assets/img/sample.svg";
+import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox";
 
 const TagContainer=styled.div`
   margin: 20px 0 16px 0;
@@ -108,6 +112,7 @@ const TitleContainer=styled.input`
   &:focus {
     outline: none; 
     border-bottom: 2px solid #100069;
+    color: #100069;
   }
 `
 
@@ -130,31 +135,122 @@ const FinishBotton=styled.button`
 `
 
 const WriteNewPost = () => {
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [clickPoint, setClickPoint] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [selectedStyles, setSelectedStyles] = useState('');
+  const [selectedWeather, setSelectedWeather] = useState('');
+  const [selectedSituation, setSelectedSituation] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);     // 선택한 모든 태그들
+  const [showTag, setShowTag] = useState(false);
+  const [image, setImage] = useState({
+    image_file: null,
+    preview_URL: null,
+  });
+
+    // after filter
+    const [styleCategories, setStyleCategories] = useState([
+      "미니멀",
+      "이지캐주얼",
+      "비즈니스캐주얼",
+      "아메카지",
+      "스트릿",
+      "시티보이",
+      "원마일웨어",
+      "스포티",
+      "유니크",
+      "레트로",
+      "올드머니룩",
+      "하객룩",
+      "바캉스룩",
+      "힙합",
+    ]);
   
-  const containerRef = useRef(null);
-
-  const handelMouseDownEvent = (e) => {
-    setDragging(true);
-    if(containerRef.current){
-      setClickPoint(e.pageX);
-      setScrollLeft(containerRef.current.scrollLeft);
+    const [weatherCategories, setWeatherCategories] = useState([
+      ["봄 코디", "여름 코디"],
+      ["가을 코디", "겨울 코디"],
+    ]);
+  
+    const [situationCategories, setSituationCategories] = useState([
+      "면접", "여행", "캠퍼스", "데이트", "출근", "결혼식"
+    ]);
+  
+    // 사진들 스크롤
+    const handelMouseDownEvent = (e) => {
+      setDragging(true);
+      if(containerRef.current){
+        setClickPoint(e.pageX);
+        setScrollLeft(containerRef.current.scrollLeft);
+      }
+    };
+  
+    const handelMouseMoveEvent = (e) => {
+      if(!dragging) return;
+  
+      e.preventDefault();
+  
+      if(containerRef.current){
+        const walk = e.pageX - clickPoint;
+        containerRef.current.scrollLeft = scrollLeft - walk;
+      }
     }
-  };
 
-  const handelMouseMoveEvent = (e) => {
-    if(!dragging) return;
-
-    e.preventDefault();
-
-    if(containerRef.current){
-      const walk = e.pageX - clickPoint;
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
+  // 바텀 시트 열기
+  const openBottomSheet = () => {
+    setIsOpen(true);
   }
 
+  // // 바텀 시트에서 코디 확인하기 버튼 누르면 +버튼이랑 문장 사라지고 태그들 뜨게
+  // const showTags=() => {
+  //   setShowTag(true);
+  //   setIsOpen(false); // 바텀 시트 닫기
+  // }
+
+  // 게시물 사진 업로드
+  const handleImageChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            setImage({
+                image_file: selectedFile,
+                preview_URL: e.target.result,
+            });
+        };
+
+        reader.readAsDataURL(selectedFile);
+    }
+};    
+
+  // 백엔드 통신
+  const handlePostUpload = () => {
+    console.log(selectedStyles);
+    console.log(selectedSituation);
+    console.log(selectedWeather);
+    async function fetchData() {
+      try {
+        const res = await axios.post('http://localhost:8080/board/create',{
+          style: String,
+          like_count: Number,
+          season: String,
+          situation: String,
+          content: String,
+          image_url: String
+        });
+        if (res.data === 'success') {
+            navigate('/postdetail');
+        }
+      } catch (error) {
+          console.error(error);
+      }
+      fetchData();
+    }
+  }
     return(
     <f.Totalframe>
       <f.SubScreen>
@@ -162,13 +258,40 @@ const WriteNewPost = () => {
             {/* 버튼 부분 */}
             <GobackContainer />
             {/* 태그 */}
-            <TagContainer>     {/* 여기수정하기. 버튼 눌렀을 때, 바텀시트 뜨고 선택한 태그들 뜨게 */}
-              <img src={addTag} onClcick/>
-              <Content>스타일 코디 태그를 설정해주세요</Content>
+            <TagContainer>  
+              {showTag? (
+                <>
+                  {selectedTags?.map((data) => (
+                    <BigStyleCategoryBox key={data} content={'#' + data} isSelected={true} />
+                  ))}
+                  <img src={addTag} onClick={openBottomSheet}/>
+                </>
+              ):(
+                <>
+                  <img src={addTag} onClick={openBottomSheet}/>
+                  <Content>스타일 코디 태그를 설정해주세요</Content>
+                </>
+              )}
             </TagContainer>
             {/* 사진 */}
-            <PhotoContainer>
-              <PostList ref={containerRef}
+             <input
+              type="file"
+              id="postImageInput"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
+            <c.Label htmlFor="postImageInput">
+              <PhotoContainer>
+                <Photo src={image.preview_URL || addPost}></Photo>
+              </PhotoContainer>
+            </c.Label>
+
+            {/* <PhotoContainer>
+              <PostList>
+                <Photo src={addPost}></Photo>
+              </PostList> */}
+              {/* <PostList ref={containerRef}
                 onMouseDown={handelMouseDownEvent}
                 onMouseLeave={() => setDragging(false)}
                 onMouseUp={() => setDragging(false)}
@@ -178,8 +301,8 @@ const WriteNewPost = () => {
                 <Photo src={logo}></Photo>
                 <Photo src={sample}></Photo>
                 <Photo src={logo}></Photo>
-              </PostList>
-            </PhotoContainer>
+              </PostList> 
+            </PhotoContainer>*/}
             {/* 글 제목 */}
             <TitleContainer placeholder="코디 제목을 작성해주세요" />
             {/* 글 작성 */}
@@ -189,11 +312,18 @@ const WriteNewPost = () => {
 
         {/* 글 작성 완료 버튼*/}
         <Link to="../postdetail">
-          <FinishBotton>작성 완료</FinishBotton>
+          <FinishBotton onClick={handlePostUpload}>작성 완료</FinishBotton>
         </Link>
         </f.ScreenComponent>
       </f.SubScreen>
-      <Navigation />
+
+      {/* 바텀 시트와 네비게이션 바*/}
+      {isOpen ? <BottomSheetSingle openState={setIsOpen} isOpen={isOpen} sendData={setShowTag}
+        styleCategories={styleCategories} weatherCategories={weatherCategories} situationCategories={situationCategories}
+        selectedStyles={selectedStyles} selectedSituation={selectedSituation} selectedWeather={selectedWeather}
+        setSelectedStyles={setSelectedStyles} setSelectedSituation={setSelectedSituation} setSelectedWeather={setSelectedWeather}
+        addSelectedTag={setSelectedTags}/> 
+        : <Navigation type={'Home'}/> }
     </f.Totalframe>
     )
 }

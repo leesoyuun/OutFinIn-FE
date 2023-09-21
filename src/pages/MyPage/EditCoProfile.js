@@ -83,6 +83,7 @@ const EditCoProfile = () => {
     const [checkNickname, setCheckNickname] = useState("");
     const nicknameRef = useRef(null);
     const [pass, setPass] = useState(false);
+    const [styles, setStyles] = useState(['미니멀', '봄 코디']);
 
     // 사진 네이밍을 위한 포매팅
     const today = new Date();
@@ -218,7 +219,7 @@ const EditCoProfile = () => {
                     sns_url: sns_url,
                     image_url: photoName,
                     content: content,
-                    // "styles": Array(String)
+                    styles: styles
                 },
                 {
                     headers: { 'Content-Type': 'application/json'},
@@ -298,12 +299,10 @@ const EditCoProfile = () => {
                     onMouseLeave={() => setDragging(false)}
                     onMouseUp={() => setDragging(false)}
                     onMouseMove={handelMouseMoveEvent}>
-                    <BigStyleCategoryBox content={'#미니멀'} isSelected={true} />
-                    <BigStyleCategoryBox content={'#이지캐주얼'} isSelected={true}/>
-                    <BigStyleCategoryBox content={'#스트릿'} isSelected={true} />
-                    <BigStyleCategoryBox content={'#봄 코디'} isSelected={true} />
-                    <BigStyleCategoryBox content={'#봄 코디'} isSelected={true} />
-                <BigStyleCategoryBox content={'+'}/>
+                    {styles?.map((data)=> (
+                        <BigStyleCategoryBox content={data} isSelected={true}/>
+                    ))}
+                    <BigStyleCategoryBox content={'+'}/>
                 </HashTag>
 
 
