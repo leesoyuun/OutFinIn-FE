@@ -85,7 +85,6 @@ const EditCoProfile = () => {
     const [pass, setPass] = useState(false);
     const [styles, setStyles] = useState(['미니멀', '봄 코디']);
 
-
     // 사진 네이밍을 위한 포매팅
     const today = new Date();
     const year = today.getFullYear(); // 연도
