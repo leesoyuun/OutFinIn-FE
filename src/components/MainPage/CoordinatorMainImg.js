@@ -19,6 +19,7 @@ const Img = styled.img`
     width: 100%;
     height: 46.44vh;
     border-radius: 18px;
+    object-fit: cover; /* 이미지를 커버 모드로 설정 */
 `;
 const CoordinatorMainImg = (props) => {
     const [fillColor, setFillColor] = useState(heart);
