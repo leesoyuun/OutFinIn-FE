@@ -87,11 +87,12 @@ const CategoryBox = styled.div`
     display: flex;
     margin-top: 1.18vh;
 `
+
+const HangerContent=styled.div`
+    color: black;
+`
+
 const CoordinatorInfo = (props) => {
-<<<<<<< HEAD
-=======
-    // 온 클릭 함수
->>>>>>> be6ac56 (Conflict Resolution)
 
     return(
         <CoordinatorInfos>
@@ -104,16 +105,6 @@ const CoordinatorInfo = (props) => {
                         <Rank src={rank1}/>
                         <CoordinatorName>{props.name}</CoordinatorName>
                     </f.Flex>
-                        {/* <f.Flex>
-                        <Hanger>
-                            <HangerImg src={hanger}></HangerImg>
-                            의뢰 {props.requestCnt}번
-                        </Hanger>
-                        <Star>
-                            <StarImg src={star}></StarImg>
-                            {props.likeCnt}
-                        </Star>
-                        </f.Flex> */}
                     </CoordinatorGrade>
                 <CategoryBox>
                 {props.styles?.map((style)=>(

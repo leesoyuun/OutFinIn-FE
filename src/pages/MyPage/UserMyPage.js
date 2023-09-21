@@ -5,16 +5,15 @@ import styled from "styled-components";
 import * as f from "../../components/Common/CommonStyle";
 import GobackContainer from "../../components/Common/GobackContainer";
 import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox"
-
 import Navigation from "../../components/Navigation/Navigation";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import Grades from "../../components/MainPage/Grades";
-
 import Heart from "../../assets/img/mypage/heart.svg";
 import Hanger from "../../assets/img/mypage/hanger.svg";
 import Review from "../../assets/img/mypage/review.svg";
 import Outer from "../../assets/img/mypage/outer.svg";
 
+//주석
 const UserInfos = styled.div`
   margin-top: 2.72vh;
 `;
@@ -103,7 +102,7 @@ const UserMyPage = () => {
     async function fetchMainPage(){
       try{
         axios.defaults.withCredentials=true;
-        const res = await axios.get("http://localhost:8080/user/mypage?id="+1);
+        const res = await axios.get("http://localhost:8080/user/mypage");
         userMyPage.shape == 'NATURAL' ? setBodyShape('내추럴') : userMyPage.shape == 'WAVE' ? setBodyShape('웨이브') : setBodyShape('스트레이트');
         setUserMyPage(res.data)
       }catch(error){
