@@ -118,9 +118,13 @@ const Login = () => {
                     password : password
                 });
 
-                if(res.data === 'success') {
+                if(res.data === 'coordinator') {
                     console.log(password);
                     navigate('/outermainpage');
+                }
+                else if(res.data === 'user') {
+                    console.log(password);
+                    navigate('/usermainpage');
                 }else {
                     console.log(res.data);
                 }

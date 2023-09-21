@@ -7,16 +7,23 @@ import star from '../../assets/img/star.svg';
 import rank1 from '../../assets/img/Rank/rank1.svg';
 
 const CoordinatorInfos = styled.div`
+    width: 61px;
+    height: 61px;
     display: flex;
     margin-top: 2.36vh;
     margin-bottom: 1.06vh;
     color: #000;
 `;
 
+const CoImgContainer=styled.div`
+    width: 61px;
+    height: 61px;
+`
 const CoordinatorImg = styled.img`
     width: 61px;
     height: 61px;
     border-radius: 50%;
+    object-fit: cover; /* 이미지를 커버 모드로 설정 */
 `;
 
 const CoordinatorSubInfo = styled.div`
@@ -34,6 +41,7 @@ const Rank = styled.img`
 `;
 
 const CoordinatorName = styled.div`
+    width: 300px;
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -83,7 +91,9 @@ const CoordinatorInfo = (props) => {
 
     return(
         <CoordinatorInfos>
-            <CoordinatorImg src={props.profileImg}></CoordinatorImg>
+            <CoImgContainer>
+                <CoordinatorImg src={props.profileImg}></CoordinatorImg>
+            </CoImgContainer>
             <CoordinatorSubInfo>
                 <CoordinatorGrade>
                     <f.Flex>
