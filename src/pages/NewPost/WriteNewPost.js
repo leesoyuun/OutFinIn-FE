@@ -2,12 +2,13 @@ import React, { useState,useRef } from "react";
 import * as f from "../../components/Common/CommonStyle";
 import * as c from '../../components/Join/CoInfoStyle';
 import styled from "styled-components";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import GobackContainer from "../../components/Common/GobackContainer";
 import BottomSheetSingle from "../../components/MainPage/BottomSheetSingle";
 import Navigation from "../../components/Navigation/Navigation";
 import addTag from "../../assets/img/addTag.svg";
 import addPost from "../../assets/img/addPost.png";
+import AWS from 'aws-sdk';
 import axios from 'axios';
 
 // 지울거. 샘플이미지
@@ -93,7 +94,7 @@ const TitleContainer=styled.input`
   width: 100%;
   border: none;
   border-bottom: 2px solid var(--material-theme-sys-light-outline-variant, #C8C5D0);
-  color: var(--material-theme-ref-neutral-neutral-70, #ADAAAF);
+  color: #100069;
   font-family: Noto Sans CJK KR;
   font-size: 16px;
   font-style: normal;
@@ -112,7 +113,6 @@ const TitleContainer=styled.input`
   &:focus {
     outline: none; 
     border-bottom: 2px solid #100069;
-    color: #100069;
   }
 `
 
@@ -141,6 +141,8 @@ const WriteNewPost = () => {
   const [dragging, setDragging] = useState(false);
   const [clickPoint, setClickPoint] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [selectedStyles, setSelectedStyles] = useState('');
   const [selectedWeather, setSelectedWeather] = useState('');
   const [selectedSituation, setSelectedSituation] = useState('');
@@ -150,6 +152,16 @@ const WriteNewPost = () => {
     image_file: null,
     preview_URL: null,
   });
+  // 사진 네이밍을 위한 포매팅
+  const today = new Date();
+  const year = today.getFullYear(); // 연도
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 1을 더하고 두 자리로 포맷팅)
+  const day = String(today.getDate()).padStart(2, '0'); // 일 (두 자리로 포맷팅)
+  const hours = String(today.getHours()).padStart(2, '0'); // 시간 (두 자리로 포맷팅)
+  const minutes = String(today.getMinutes()).padStart(2, '0'); // 분 (두 자리로 포맷팅)
+  const seconds = String(today.getSeconds()).padStart(2, '0'); // 초 (두 자리로 포맷팅)
+  const formattedDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  const [photoName,setPhotoName] = useState('');
 
     // after filter
     const [styleCategories, setStyleCategories] = useState([
@@ -229,28 +241,61 @@ const WriteNewPost = () => {
 
   // 백엔드 통신
   const handlePostUpload = () => {
-    console.log(selectedStyles);
-    console.log(selectedSituation);
-    console.log(selectedWeather);
-    async function fetchData() {
-      try {
-        const res = await axios.post('http://localhost:8080/board/create',{
-          style: String,
-          like_count: Number,
-          season: String,
-          situation: String,
-          content: String,
-          image_url: String
+    AWS.config.update({
+      region: "ap-northeast-2",
+      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    });
+
+    try {
+      const file = image.image_file;
+      const upload = new AWS.S3.ManagedUpload({
+          params: {
+              Bucket: "seumu-s3-bucket", // 버킷 이름
+              Key:  photoName, // 파일 이름 (버킷 안에서 저장될 파일 이름)
+              Body: file, // 파일 객체
+          },
         });
-        if (res.data === 'success') {
-            navigate('/postdetail');
+
+      const promise = upload.promise();   // 반환값을 받음
+
+      // 코디네이터 중간 정보
+      promise.then((data) => {
+        async function fetchData() {
+            try {
+                const res = await axios.post('http://localhost:8080/board/create', {
+                    style: selectedStyles,
+                    like_count: 0,
+                    title: title,
+                    season: selectedWeather,
+                    situation: selectedSituation,
+                    content: content,
+                    image_url: image.image_url
+                });
+                if (res.data === 'success') {
+                    navigate('/postdetail');
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-      } catch (error) {
-          console.error(error);
-      }
-      fetchData();
-    }
+        fetchData();
+    }); 
+  } catch (error) {
+      console.error(error);
   }
+};
+    
+    
+  const changeContent = (e) => {
+    setContent(e.target.value);
+  }
+
+  const changeTitle = (e) => {
+    setTitle(e.target.value);
+    // setPhotoName(nickname+formattedDate+'.jpg');
+  }
+
     return(
     <f.Totalframe>
       <f.SubScreen>
@@ -304,16 +349,14 @@ const WriteNewPost = () => {
               </PostList> 
             </PhotoContainer>*/}
             {/* 글 제목 */}
-            <TitleContainer placeholder="코디 제목을 작성해주세요" />
+            <TitleContainer onChange={changeTitle} value={title} placeholder="코디 제목을 작성해주세요" />
             {/* 글 작성 */}
             <TextContainer>
-              <TextArea placeholder="아우터님의 코디를 설명해주세요" />
+              <TextArea onChange={changeContent} value={content} placeholder="아우터님의 코디를 설명해주세요" />
             </TextContainer>
 
         {/* 글 작성 완료 버튼*/}
-        <Link to="../postdetail">
-          <FinishBotton onClick={handlePostUpload}>작성 완료</FinishBotton>
-        </Link>
+        <FinishBotton onClick={handlePostUpload}>작성 완료</FinishBotton>
         </f.ScreenComponent>
       </f.SubScreen>
 

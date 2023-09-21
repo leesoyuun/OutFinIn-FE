@@ -111,7 +111,7 @@ const OuterMainPage = () => {
           ))}
           {/* 글 작성 버튼 */}
           <WriteButtonContainer>
-            <Link to="/writenewpost">
+            <Link to='/writenewpost'>
                 <img src={plus} />
             </Link>
           </WriteButtonContainer>
