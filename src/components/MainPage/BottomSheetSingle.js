@@ -94,59 +94,90 @@ const ApplyCodi = styled.div`
   letter-spacing: 0.175px;
 `;
 
-function BottomSheet(props) {
-    const [selectedStyles, setSelectedStyles] = useState([]);
-    const [isClose, setIsClose] = useState(false)
+function BottomSheetSingle(props) {
+    const [selectedStyles, setSelectedStyles] = useState(null);
+    const [selectedSituation, setSelectedSituation] = useState(null);
+    const [selectedWeather, setSelectedWeather] = useState(null);
+    const [allTags, setAllTags]=useState([]);
+
+    const MakeList = () => {
+        const selectedTags = [];
+      
+        if (selectedStyles) {
+          selectedTags.push(selectedStyles);
+          props.setSelectedStyles(selectedStyles);
+        }
+        if (selectedWeather) {
+            selectedTags.push(selectedWeather);
+            props.setSelectedSituation(selectedSituation);
+          }
+        if (selectedSituation) {
+          selectedTags.push(selectedSituation);
+          props.setSelectedWeather(selectedWeather);
+        }
+      
+        if (selectedTags.length > 1) {
+          props.addSelectedTag(selectedTags);
+          props.openState(false); // 바텀 시트 닫기
+          props.sendData(true); // 태그들 띄어주기
+        } else {
+          // 오류 처리 또는 사용자에게 메시지 표시
+        }
+      }
 
     const handleStyleClick = (style, type) => {
-        // 이미 선택된 스타일이면 제거, 아니면 추가
-        if (selectedStyles.includes(style)) {
-          setSelectedStyles(selectedStyles.filter((selectedStyle) => selectedStyle !== style));
-          if(type === 'style'){
-            props.setSelectedStyles(
-              props.selectedStyles.filter((selected) => selected !== style));
+        // 선택된 스타일을 업데이트하는 함수
+        const updateSelectedStyle = (selectedStyle, newStyle) => {
+          if (selectedStyle === newStyle) {
+            return null; // 이미 선택된 스타일이면 해제
           }
+          return newStyle; // 선택되지 않은 스타일이면 선택
+        };
 
-          else if(type === 'situation') {
-            props.setSelectedSituation(
-              props.selectedSituation.filter((selected) => selected !== style));
-          }
-
-          else if(type === 'weather') {
-
-          }
-        } else {
-          setSelectedStyles([...selectedStyles, style]);
-
-          if(type === 'style'){
-            props.setSelectedStyles([...props.selectedStyles, style]);
-          }
-
-          else if(type === 'situation') {
-            props.setSelectedSituation([...props.selectedSituation, style]);
-          }
-
-          else if(type === 'weather') {
-
-          }
+        switch (type) {
+          case 'style':
+            setSelectedStyles(prevStyles => updateSelectedStyle(prevStyles, style));
+            break;
+          case 'situation':
+            setSelectedSituation(prevSituation => updateSelectedStyle(prevSituation, style));
+            break;
+          case 'weather':
+            setSelectedWeather(prevWeather => updateSelectedStyle(prevWeather, style));
+            break;
+          default:
+            break;
         }
-        props.addSelectedTag(style);
-    }   
+   }  
 
     const styleCategoryBoxes = props.styleCategories.map((category, index) => (
         <GetStyleBox
         key={index}
         content={category}
-        isSelected={selectedStyles.includes(category)} onClick={() => handleStyleClick(category, 'style')}
+        isSelected={selectedStyles === category}
+        onClick={() => handleStyleClick(category, 'style')}
         />
     ));
 
     const situationCategoryBoxes = props.situationCategories.map((category) => (
       <GetStyleBox
+        key={category}
         content={category}
-        isSelected={selectedStyles.includes(category)} onClick={() => handleStyleClick(category, 'situation')}
+        isSelected={selectedSituation === category}
+        onClick={() => handleStyleClick(category, 'situation')}
       />
-    ))
+    ));
+
+    const weatherCategoryBoxes = props.weatherCategories.flatMap((categoryRow) =>
+      categoryRow.map((category) => (
+        <GetStyleBox
+          key={category}
+          content={category}
+          isSelected={selectedWeather === category}
+          onClick={() => handleStyleClick(category, 'weather')}
+        />
+      ))
+    );
+
 
     const isopenChange = () => {
       props.openState(!props.isOpen)
@@ -160,31 +191,20 @@ function BottomSheet(props) {
             <ModalTitle>
                 추가하실 스타일<br/>태그를 골라주세요
                 <img src={XButton} onClick={isopenChange} />
-                {/* <BottomSheet openState={setIsOpen} isOpen={isOpen}/> */}
             </ModalTitle>
             <Category>{styleCategoryBoxes}</Category>
             <Hr/>
-            {props.weatherCategories.map((categoryRow, rowIndex) => (
-                <div key={rowIndex}>
-                {categoryRow.map((category, index) => (
-                    <GetStyleBox
-                    key={index}
-                    content={category}
-                    isSelected={selectedStyles.includes(category)} onClick={() => handleStyleClick(category)}
-                    />
-                ))}
-                </div>
-            ))}
+            {weatherCategoryBoxes}
             <Hr/>
             {situationCategoryBoxes}
         </BottomSheetContent>
     </StyledBottomSheet>
     <FooterBottomSheet>
       <Clear>선택 해제</Clear>
-      <ApplyCodi onClick={props.sendData}>코디 확인하기</ApplyCodi>
+      <ApplyCodi onClick={MakeList}>코디 확인하기</ApplyCodi>
     </FooterBottomSheet>
     </>
   );
 }
 
-export default BottomSheet;
+export default BottomSheetSingle;
