@@ -1,9 +1,8 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import * as f from '../Common/CommonStyle';
 import SmallStyleCategoryBox from "../../components/Common/SmallStyleCategoryBox";
-import hanger from '../../assets/img/hanger.svg';
-import star from '../../assets/img/star.svg';
 import rank1 from '../../assets/img/Rank/rank1.svg';
 import instagram from '../../assets/img/instagram.svg';
 const CoordinatorInfos = styled.div`
@@ -57,6 +56,7 @@ const Instagram = styled.div`
     line-height: normal;
     border-radius: 5px;
     border: 1px solid #C4C0FF;
+    margin-left: 12px;
 `;
 
 const InstagramImg = styled.img`
@@ -78,10 +78,12 @@ const CoordinatorInfo = (props) => {
                 <CoordinatorGrade>
                     <Rank src={rank1}/>
                     <CoordinatorName>{props.name}</CoordinatorName>
-                    <Instagram>
-                        <InstagramImg src={instagram}/>
-                        Instagram
-                    </Instagram>
+                    <Link to={props.snsLink}>
+                        <Instagram>
+                            <InstagramImg src={instagram}/>
+                            Instagram
+                        </Instagram>
+                    </Link>
                     </CoordinatorGrade>
                 <CategoryBox>
                 {props.styles?.map((style)=>(

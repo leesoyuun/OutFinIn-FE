@@ -83,7 +83,7 @@ const PostDetail = (props) => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={post.nickname} profileImg={post.profile_image} styles={styleTag}/>
+          <CoordinatorInfo name={post.nickname} profileImg={post.profile_image} styles={styleTag} snsLink={post.sns_url}/>
           <Grades likeCnt={post.like_count} requestCnt={post.request_count}/>
           <CoordinatorIntro>
             {post.content}
