@@ -23,7 +23,7 @@ const Img = styled.img`
 const CoordinatorMainImg = (props) => {
     return(
         <CoordinatorMainImgs>
-            <Img src={props.boardImg}/>
+            <Img src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+props.boardImg}/>
             <Heart src={props.fillColor} onClick={props.likeIncrease}></Heart>
         </CoordinatorMainImgs>
     )

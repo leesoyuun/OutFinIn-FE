@@ -1,11 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import * as f from '../Common/CommonStyle';
 import SmallStyleCategoryBox from "../../components/Common/SmallStyleCategoryBox";
-import hanger from '../../assets/img/hanger.svg';
-import star from '../../assets/img/star.svg';
 import rank1 from '../../assets/img/Rank/rank1.svg';
-
+import instagram from '../../assets/img/instagram.svg';
 const CoordinatorInfos = styled.div`
     width: 61px;
     height: 61px;
@@ -27,13 +26,12 @@ const CoordinatorImg = styled.img`
 `;
 
 const CoordinatorSubInfo = styled.div`
-    width: 100%;
     margin-left:14px;
 `;
 
 const CoordinatorGrade = styled.div`
     display: flex;
-    justify-content: space-between;
+    white-space: nowrap;
 `
 
 const Rank = styled.img`
@@ -41,7 +39,6 @@ const Rank = styled.img`
 `;
 
 const CoordinatorName = styled.div`
-    width: 300px;
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -49,38 +46,21 @@ const CoordinatorName = styled.div`
     margin-right: 8px;
 `;
 
-const Hanger = styled.div`
+const Instagram = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
+    padding: 4px 12px;
+    color: #4F44E2;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    letter-spacing: 0.048px;
+    border-radius: 5px;
+    border: 1px solid #C4C0FF;
+    margin-left: 12px;
+`;
+
+const InstagramImg = styled.img`
     margin-right: 8px;
-`;
-
-const HangerImg = styled.img`
-    margin-right: 5px;
-`;
-
-const Star = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: 0.18px;
-`;
-
-
-const StarImg = styled.img`
-    margin-right: 7px;
 `;
 
 const CategoryBox = styled.div`
@@ -88,32 +68,22 @@ const CategoryBox = styled.div`
     margin-top: 1.18vh;
 `
 
-const HangerContent=styled.div`
-    color: black;
-`
-
 const CoordinatorInfo = (props) => {
     return(
         <CoordinatorInfos>
             <CoImgContainer>
-                <CoordinatorImg src={props.profileImg}></CoordinatorImg>
+                <CoordinatorImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+props.profileImg}></CoordinatorImg>
             </CoImgContainer>
             <CoordinatorSubInfo>
                 <CoordinatorGrade>
-                    <f.Flex>
-                        <Rank src={rank1}/>
-                        <CoordinatorName>{props.name}</CoordinatorName>
-                    </f.Flex>
-                        <f.Flex>
-                        <Hanger>
-                            <HangerImg src={hanger}></HangerImg>
-                            의뢰 {props.requestCnt}번
-                        </Hanger>
-                        <Star>
-                            <StarImg src={star}></StarImg>
-                            {props.likeCnt}
-                        </Star>
-                        </f.Flex>
+                    <Rank src={rank1}/>
+                    <CoordinatorName>{props.name}</CoordinatorName>
+                    <Link to={props.snsLink}>
+                        <Instagram>
+                            <InstagramImg src={instagram}/>
+                            Instagram
+                        </Instagram>
+                    </Link>
                     </CoordinatorGrade>
                 <CategoryBox>
                 {props.styles?.map((style)=>(

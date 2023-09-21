@@ -27,7 +27,7 @@ const GradeBar = styled.div`
     width: 1px;
     height: 1.65vh;
     background: #C4C4C4;
-    margin: 0px 20px;
+    margin: 0px 15px;
 `
 const Grades = (props) => {
     return(
