@@ -3,7 +3,7 @@ import * as f from "../../components/Common/CommonStyle";
 import styled from "styled-components";
 import {useParams} from 'react-router-dom'
 import axios from 'axios';
-import Navigation from "../../components/Navigation/Navigation";
+import BottomPrice from "../../components/MainPage/BottomPrice";
 import GobackContainer from "../../components/Common/GobackContainer";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
@@ -100,7 +100,7 @@ const PostDetail = (props) => {
           </ReviewText> */}
         </f.ScreenComponent>
       </f.SubScreen>
-      <Navigation type={'Home'}/>
+      <BottomPrice/>
     </f.Totalframe>
     )
 }

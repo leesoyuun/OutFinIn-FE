@@ -1,62 +1,82 @@
-import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
-import * as n from "./NavigationStyle";
-import Home from '../../assets/img/navigationIcon/home.svg';
-import FillHome from '../../assets/img/navigationIcon/fillHome.svg';
-import Search from '../../assets/img/navigationIcon/search.svg';
-import FillSearch from '../../assets/img/navigationIcon/fillSearch.svg';
-import Chat from '../../assets/img/navigationIcon/chat.svg';
-import FillChat from '../../assets/img/navigationIcon/fillChat.svg'
+import React from 'react';
+import styled from "styled-components";
 
-import MyPage from "../../assets/img/navigationIcon/mypage.svg";
-import FillMyPage from "../../assets/img/navigationIcon/fillMyPage.svg";
+const TotalBottomPrice = styled.div`
+    display:flex;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+    padding: 13px 40px 5px 40px;
+    width: 390px;
+    height: 15.40vh;
+    border-top: 1px solid #C4C4C4;
+    position: fixed;
+    bottom: 0;
+`
+
+const SubBottomPrcie = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+`;
+
+const TagCodi = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+`;
+
+const Tag = styled.div`
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.175px;
+    margin-right: 5px;
+`;
+
+const Prcie = styled.div`
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.024px;
+`;
+
+const Chat = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    background: #4F44E2;
+    color: #FFF;
+    width: 118px;
+
+    /* Subtitle1 */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.024px;
+`;
+
 const BottomPrice = (props) => {
-    const [selectIcon, setSelectIcon] = useState("Home");
-
-    useEffect(() => {
-        setSelectIcon(props.type);
-    }, [props.type])
+    
 
     return(
-        <n.TotalNavigation>
-            {/* 홈-코디네이터, 유저냐에 따라 달라짐 */}
-            <Link to={localStorage.getItem('mode') == 1 ? "/outermainpage" : "/usermainpage"}>
-                <n.SubNavigation 
-                    marginRight='45px'
-                    isSelected={selectIcon === 'Home'}>
-                    <img src={selectIcon === 'Home' ? FillHome : Home}/>
-                    <n.IconText>홈</n.IconText>
-                </n.SubNavigation>
-            </Link>
-            {/* 검색 */}
-            <Link to='/search'>
-                <n.SubNavigation
-                    marginRight='45px'
-                    isSelected={selectIcon === 'search'}>
-                    <img src={selectIcon === 'search' ? FillSearch : Search} ></img>
-                    <n.IconText>검색</n.IconText>
-                </n.SubNavigation>
-            </Link>
-            {/* 채팅 */}
-            <Link to='/chat'>
-                <n.SubNavigation
-                    marginRight='45px'
-                    isSelected={selectIcon === 'chat'}
-                    >
-                    <img src={selectIcon === 'chat' ? FillChat : Chat} ></img>
-                    <n.IconText>채팅</n.IconText>
-                </n.SubNavigation>
-            </Link>
-            {/* 마이 -코디네이터, 유저냐에 따라 달라짐*/}
-            <Link to={localStorage.getItem('mode') == 1 ? "/outermypage" : "/usermypage" }>
-                <n.SubNavigation 
-                    isSelected={selectIcon === 'mypage'}
-                >
-                    <img src={selectIcon === 'mypage' ? FillMyPage : MyPage} ></img>
-                    <n.IconText>마이</n.IconText>
-                </n.SubNavigation>
-            </Link>
-        </n.TotalNavigation>
+        <TotalBottomPrice>
+            <SubBottomPrcie>
+                <div>
+                    <TagCodi>
+                        <Tag>#미니멀</Tag>
+                        코디 가격
+                    </TagCodi>
+                    <Prcie>1만원~</Prcie>
+                </div>
+                <Chat>채팅 보내기</Chat>
+            </SubBottomPrcie>
+        </TotalBottomPrice>
     )
 }
 export default BottomPrice;
