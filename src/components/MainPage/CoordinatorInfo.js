@@ -96,7 +96,7 @@ const CoordinatorInfo = (props) => {
     return(
         <CoordinatorInfos>
             <CoImgContainer>
-                <CoordinatorImg src={props.profileImg}></CoordinatorImg>
+                <CoordinatorImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+props.profileImg}></CoordinatorImg>
             </CoImgContainer>
             <CoordinatorSubInfo>
                 <CoordinatorGrade>
@@ -104,16 +104,7 @@ const CoordinatorInfo = (props) => {
                         <Rank src={rank1}/>
                         <CoordinatorName>{props.name}</CoordinatorName>
                     </f.Flex>
-                        <f.Flex>
-                        <Hanger>
-                            <HangerImg src={hanger}></HangerImg>
-                            의뢰 {props.requestCnt}번
-                        </Hanger>
-                        <Star>
-                            <StarImg src={star}></StarImg>
-                            {props.likeCnt}
-                        </Star>
-                        </f.Flex>
+                    
                     </CoordinatorGrade>
                 <CategoryBox>
                 {props.styles?.map((style)=>(

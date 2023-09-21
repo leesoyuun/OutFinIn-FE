@@ -190,10 +190,10 @@ const Search = () => {
             {firstPage?.map((data) => (
               <>
               <Link to='/postdetail'>
-              <CoordinatorMainImg boardImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.board_image}/>
+              <CoordinatorMainImg boardImg={data.board_image}/>
               </Link>
               <Link to='/outerprofile'>
-                <CoordinatorInfo name={data.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.profile_image} requestCnt={data.request_count}
+                <CoordinatorInfo name={data.nickname} profileImg={data.profile_image} requestCnt={data.request_count}
                 likeCnt={data.total_like} styles={data.styles}/>
               </Link>
               </>              

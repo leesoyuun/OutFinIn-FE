@@ -131,7 +131,7 @@ const UserMainPage = () => {
           {mainPage?.map((data)=>(
             <CoordinatorProfile>
               <Link to={`/postdetail/${data.board_id}`}>
-                <CoordinatorMainImg boardImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.board_image}
+                <CoordinatorMainImg boardImg={data.board_image}
                 likeIncrease={(e) => {
                   e.preventDefault(); // 링크 이동을 막음
                   likeIncrease(data.board_id); // 하트 클릭 이벤트 처리
@@ -140,7 +140,7 @@ const UserMainPage = () => {
                 fillColor={likedPosts[data.board_id] ? fillheart : heart}/>
               </Link>
             <Link to={`/outerprofile/${data.coordinator_id}`}>
-              <CoordinatorInfo name={data.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.profile_image}
+              <CoordinatorInfo name={data.nickname} profileImg={data.profile_image}
               requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles}/>
             </Link>
           </CoordinatorProfile>
