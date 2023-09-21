@@ -88,10 +88,6 @@ const CategoryBox = styled.div`
     margin-top: 1.18vh;
 `
 const CoordinatorInfo = (props) => {
-<<<<<<< HEAD
-=======
-    // 온 클릭 함수
->>>>>>> be6ac56 (Conflict Resolution)
 
     return(
         <CoordinatorInfos>

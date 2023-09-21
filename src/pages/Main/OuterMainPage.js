@@ -36,6 +36,7 @@ const WriteButtonContainer=styled.div`
   position: absolute;
   right: 10px;
   bottom: 17vh;
+
 `
 
 const OuterMainPage = () => {
