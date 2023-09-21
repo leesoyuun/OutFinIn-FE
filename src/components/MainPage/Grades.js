@@ -34,7 +34,7 @@ const Grades = (props) => {
     <Grade>
         <GradeSection>
             <GradeIcon src={fillMinHeart}/>
-            {props.like}
+            {props.likeCnt}
             <GradeBar/>
         </GradeSection>
         <GradeSection>
@@ -49,7 +49,7 @@ const Grades = (props) => {
         </GradeSection>
         <GradeSection>
             <GradeIcon src={hanger}/>
-            {props.request}
+            의뢰횟수 {props.requestCnt}번
         </GradeSection>
     </Grade>
     )

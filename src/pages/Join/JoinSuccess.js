@@ -36,9 +36,7 @@ const JoinSuccess = () => {
                     
                 </f.ScreenComponent>
                 <ButtonContainer>
-                    <Link to={localStorage.getItem('mode') == 1 ? 
-                            "../outermainpage":
-                            "../usermainpage"} style={{ textDecoration: 'none' }}>
+                    <Link to='/' style={{ textDecoration: 'none' }}>
                                 <ButtonBottom content={'시작하기'} />
                     </Link>
                 </ButtonContainer>

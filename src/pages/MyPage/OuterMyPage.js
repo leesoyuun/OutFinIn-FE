@@ -94,7 +94,8 @@ const OuterMyPage = () => {
     async function fetchMainPage(){
       try{
         axios.defaults.withCredentials=true;
-        const res = await axios.get("http://localhost:8080/coordinator/mypage?id="+1);
+        const res = await axios.get("http://localhost:8080/coordinator/mypage");
+        console.log(res.data);
         setOuterMyPage(res.data)
       }catch(error){
         console.error(error);
@@ -111,8 +112,8 @@ const OuterMyPage = () => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={outerMyPage.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+outerMyPage.image_url} likeCnt={outerMyPage.total_like} requestCnt={outerMyPage.request_count} styles={outerMyPage.styles}/>
-          <Grades />
+          <CoordinatorInfo name={outerMyPage.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+outerMyPage.image_url} styles={outerMyPage.styles}/>
+          <Grades likeCnt={outerMyPage.total_like} requestCnt={outerMyPage.request_count} />
           {/* 마이페이지 내용 */}
           <CoordinatorIntro>
           안녕하세요 저는 패션디자인과를 졸업한 아우터입니다. 주로 아이돌 코디를 전담했었습니다.
