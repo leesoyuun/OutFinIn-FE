@@ -38,7 +38,7 @@ const Navigation = (props) => {
                 </n.SubNavigation>
             </Link>
             {/* 채팅 */}
-            <Link to='/chat'>
+            <Link to='/chatlist'>
                 <n.SubNavigation
                     marginRight='45px'
                     isSelected={selectIcon === 'chat'}

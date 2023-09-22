@@ -9,7 +9,8 @@ import OuterMainPage from "./pages/Main/OuterMainPage";
 import WriteNewPost from "./pages/NewPost/WriteNewPost";
 import Search from "./pages/Search/Search";
 import SearchFilter from "./pages/Search/SearchFilter";
-import Chat from "./pages/Chat/Chat";
+import ChatList from "./pages/Chat/ChatList";
+import ChatRoom from "./pages/Chat/ChatRoom";
 import OuterMyPage from "./pages/MyPage/OuterMyPage";
 import UserMyPage from "./pages/MyPage/UserMyPage";
 import EditCoProfile from "./pages/MyPage/EditCoProfile";
@@ -38,7 +39,8 @@ function App() {
             <Route path="/writenewpost" element={<WriteNewPost />} />
             <Route path="/search" element={<Search />} />
             <Route path="/searchfilter" element={<SearchFilter />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chatlist" element={<ChatList />} />
+            <Route path="/chatroom" element={<ChatRoom/>}/>
             <Route path="/outermypage" element={<OuterMyPage />} />
             <Route path="/usermypage" element={<UserMyPage />} />
             <Route path="/editcoprofile" element={<EditCoProfile />} />

@@ -120,6 +120,7 @@ const EditCoProfile = () => {
                 setImage_url("https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+res.data.image_url);
                 setSns_url(res.data.sns_url);
                 setContent(res.data.content);
+                setPhotoName(res.data.nickname+formattedDate+'jpg');
                 // 성별 설정
                 if (res.data.gender === 'MALE') {
                     setMale(true);
