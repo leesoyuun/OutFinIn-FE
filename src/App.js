@@ -13,6 +13,7 @@ import Chat from "./pages/Chat/Chat";
 import OuterMyPage from "./pages/MyPage/OuterMyPage";
 import UserMyPage from "./pages/MyPage/UserMyPage";
 import EditCoProfile from "./pages/MyPage/EditCoProfile";
+import EditUserProfile from "./pages/MyPage/EditUserProfile";
 import OuterRankInfo from "./pages/MyPage/OuterRankInfo";
 import CoAllCodies from "./pages/MyPage/CoAllCodies";
 import CoReviews from "./pages/MyPage/CoReviews";
@@ -41,6 +42,7 @@ function App() {
             <Route path="/outermypage" element={<OuterMyPage />} />
             <Route path="/usermypage" element={<UserMyPage />} />
             <Route path="/editcoprofile" element={<EditCoProfile />} />
+            <Route path="/edituserprofile" element={<EditUserProfile />} />
             <Route path="/outerrankinfo" element={<OuterRankInfo/>}/>
             <Route path="/coallcodies" element={<CoAllCodies/>}/>
             <Route path="/coreviews" element={<CoReviews/>}/>

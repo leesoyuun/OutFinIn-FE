@@ -128,7 +128,9 @@ const UserMyPage = () => {
                   <BigStyleCategoryBox content={'#'+data}/>
                 ))}
               </UserCategory>
-              <EditProfile>프로필 편집</EditProfile>
+              <Link to={'/edituserprofile'}>
+                <EditProfile>프로필 편집</EditProfile>
+              </Link>
               <MyPageMenu mycodi>
                 <Icon src={Hanger}/>
                 <MyPageDescribe>내가 받은 코디</MyPageDescribe>
