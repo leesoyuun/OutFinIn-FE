@@ -99,16 +99,22 @@ const UserMainPage = () => {
       }catch(error){
           console.error(error);
       }}
+  
+    async function fetchLikeCancel() {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.get("http://localhost:8080/user/unlike?boardId="+board_id);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
+    if (fillColor === fillheart) {
+      fetchLikeCancel();
+    } else {
       fetchLike();
-  }
-
-  // 게시물의 좋아요 상태를 토글하는 함수
-  const toggleLike = (postId) => {
-    setLikedPosts((prevLikedPosts) => ({
-      ...prevLikedPosts,
-      [postId]: !prevLikedPosts[postId], // 현재 상태를 반전시킴
-    }));
-  };
+    }
+}
 
   return (
     <f.Totalframe>
@@ -135,9 +141,8 @@ const UserMainPage = () => {
                 likeIncrease={(e) => {
                   e.preventDefault(); // 링크 이동을 막음
                   likeIncrease(data.board_id); // 하트 클릭 이벤트 처리
-                  toggleLike(data.board_id);
                 }}
-                fillColor={likedPosts[data.board_id] ? fillheart : heart}/>
+                fillColor={fillColor}/>
               </Link>
             <Link to={`/outerprofile/${data.coordinator_id}`}>
               <CoordinatorInfo name={data.nickname} profileImg={data.profile_image}
