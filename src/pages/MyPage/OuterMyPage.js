@@ -128,7 +128,7 @@ const OuterMyPage = () => {
           <Link to="/coallcodies">
             <MyPageMenu mycodi>
               <Icon src={Hanger}/>
-              <MyPageDescribe>내가 진행한 코디</MyPageDescribe>
+              <MyPageDescribe>내가 쓴 글 보기</MyPageDescribe>
             </MyPageMenu>
           </Link>
           <Link to="/coreviews">

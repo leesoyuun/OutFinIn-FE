@@ -104,7 +104,7 @@ const OuterMainPage = () => {
           {/* 코디네이터 프로필 */}
           {mainPage?.map((data)=>(
             <CoordinatorProfile>
-              <Link to='/outerprofile'>
+              <Link to={`/outerprofile/${data.coordinator_id}`}>
                 <CoordinatorInfo name={data.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.profile_image} likeCnt={data.total_like} requestCnt={data.request_count} styles={data.styles}/>
               </Link>
             </CoordinatorProfile>
