@@ -188,7 +188,7 @@ const EditUserProfile= () => {
 
             if (res.data.shape === 'STRAIGHT') {
                 setStraight(true);
-            } else if (res.data.shape === 'Wave') {
+            } else if (res.data.shape === 'WAVE') {
                 setWave(true);
             } else if(res.data.shape === 'NATURAL'){
                 setNatural(true);

@@ -1,5 +1,6 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
+import {Link,useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import * as f from '../Common/CommonStyle';
 import SmallStyleCategoryBox from "../../components/Common/SmallStyleCategoryBox";

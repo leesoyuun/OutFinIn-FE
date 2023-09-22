@@ -85,7 +85,6 @@ const OuterProfile = () => {
             "http://localhost:8080/coordinator/page?id=" + coordinator_id
           );
           setPage(res.data);
-          console.log(res.data)
         } catch (error) {
           console.error(error);
         }
@@ -120,8 +119,8 @@ const OuterProfile = () => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={page.nickname} styles={page.styles} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+page.profile_image}/>
-          <Grades like={page.total_like} request={page.request_count}/>
+          <CoordinatorInfo name={page.nickname} styles={page.styles} profileImg={page.profile_image} linkState={true}/>
+          <Grades likeCnt={page.total_like} requestCnt={page.request_count}/>
           <CoordinatorIntro>{page.content}</CoordinatorIntro>
           {/* 게시물 목록 */}
           <PopularContainer>
