@@ -45,7 +45,7 @@ const GetInfo = (props) => {
         setIsClicked(!isClicked);
     };
     return(
-        <InputInfos infoName={props.infoName} ref={props.check} onClick={handleInputInfosClick} >{props.infoName}
+        <InputInfos infoName={props.infoName} ref={props.check} onClick={handleInputInfosClick}>{props.infoName}
             <InputUnit>
                 <InputInfo value={props.inputValue} onChange={props.changeValue} infoName={props.infoName}></InputInfo>
                 <Unit active={props.inputValue !== ""}>{props.unit}</Unit>

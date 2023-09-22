@@ -1,5 +1,6 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
+import {Link,useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import * as f from '../Common/CommonStyle';
 import SmallStyleCategoryBox from "../../components/Common/SmallStyleCategoryBox";
@@ -78,12 +79,12 @@ const CoordinatorInfo = (props) => {
                 <CoordinatorGrade>
                     <Rank src={rank1}/>
                     <CoordinatorName>{props.name}</CoordinatorName>
-                    <Link to={props.snsLink}>
+                    {props.linkState?<Link to={'//'+props.snsLink} target='_blank'>
                         <Instagram>
                             <InstagramImg src={instagram}/>
                             Instagram
                         </Instagram>
-                    </Link>
+                    </Link>: null}
                     </CoordinatorGrade>
                 <CategoryBox>
                 {props.styles?.map((style)=>(

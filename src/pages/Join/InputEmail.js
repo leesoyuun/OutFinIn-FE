@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as f from '../../components/Common/CommonStyle';
 import ButtonBottom from '../../components/Common/ButtonBottom';
 import QuestionMode from '../../components/Join/QuestionModeBox';
+import TopModal from "../../components/Join/TopModal";
 import eyeUnfilled from '../../assets/img/eyeUnfilled.svg';
 import eyeFilled from '../../assets/img/eyeFilled.svg';
 import {AiOutlineCheckCircle} from 'react-icons/ai';
@@ -150,6 +151,7 @@ const InputEmail = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [duplicateEmail, setDuplicateEmail] = useState(false);
+    const [modal,setModal] = useState(false);
 
     const ChangeShow= () => {
         if (showpw){
@@ -170,6 +172,10 @@ const InputEmail = () => {
     // 이메일 중복검사와 코드 발송
     const sendEmail = () => {
         let Email = emailRef.current.value + '@' + domain;
+        setModal(true);
+        setTimeout(() => {
+            setModal(false);
+          }, 2500);
         async function fetchEmail(){
             try {
                 axios.defaults.withCredentials=true;
@@ -261,6 +267,7 @@ const InputEmail = () => {
         <f.Totalframe>
             <f.SubScreen>
                 <f.ScreenComponent>
+                    <TopModal show={modal}/>
                     <f.ScreenJoin>
                         <QuestionMode content={'서비스 이용 시작 전\n본인인증이 필요합니다.'} marginBottom={'6.27vh'}/>
                         <f.Flex>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as f from "../../components/Common/CommonStyle";
 import GobackContainer from "../../components/Common/GobackContainer";
 import styled from "styled-components";
+import heart from '../../assets/img/heart.svg';
 import fillheart from '../../assets/img/fillheart.svg';
 
 const Liketxt = styled.div`
@@ -76,16 +77,48 @@ const LikeCodies = () => {
     
           fetchData();
       }, []);
+    
+      const likeIncrease = (board_id) => {
+        console.log(board_id)
+        // e.preventDefault(); // 링크 이동을 막음
+        setFillColor(fillColor === heart ? fillheart : heart);
+        async function fetchLike(){
+          try{
+              axios.defaults.withCredentials=true;
+              const res = await axios.get("http://localhost:8080/user/like?boardId="+board_id);
+          }catch(error){
+              console.error(error);
+          }}
+      
+        async function fetchLikeCancel() {
+          try {
+            axios.defaults.withCredentials = true;
+            const res = await axios.get("http://localhost:8080/user/unlike?boardId="+board_id);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      
+        if (fillColor == fillheart) {
+          fetchLikeCancel();
+          boardLike.user_board_like.pop(board_id);
+        } else {
+          fetchLike();
+          boardLike.user_board_like.push(board_id);
+        }
+    }
     return(
     <f.Totalframe>
       <GobackContainer like/>
           <Liketxt>좋아요 누른 코디</Liketxt>
             <TotalPost>
-            {boardLike?.map((post) => (
+            {boardLike?.boards?.map((post) => (
                 <PostImg key={post.board_id}>
                     <MainImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+post.image_url} />
                     <Postname>{post.title}</Postname>
-                <Heart src={fillColor}></Heart>
+                <Heart src={boardLike.user_board_like.includes(post.board_id) ? fillheart : heart}
+                onClick={(e)=>likeIncrease(post.board_id,e)}
+                />
                 </PostImg>
             ))}
             </TotalPost>

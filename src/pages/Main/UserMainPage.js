@@ -1,5 +1,5 @@
 import React, { useState,useRef,useEffect } from "react";
-import {Link,useParams} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import styled from "styled-components";
 import Navigation from "../../components/Navigation/Navigation";
 import * as f from "../../components/Common/CommonStyle";
@@ -78,7 +78,7 @@ const UserMainPage = () => {
       try{
         axios.defaults.withCredentials=true;
         const res = await axios.get("http://localhost:8080/main/user");
-        setMainPage(res.data)
+        setMainPage(res.data);
       }catch(error){
         console.error(error);
       }
@@ -91,7 +91,7 @@ const UserMainPage = () => {
 
   const likeIncrease = (board_id) => {
     console.log(board_id)
-    setFillColor(fillColor === heart ? fillheart : heart);
+    console.log(mainPage.user_board_like) 
     async function fetchLike(){
       try{
           axios.defaults.withCredentials=true;
@@ -99,16 +99,24 @@ const UserMainPage = () => {
       }catch(error){
           console.error(error);
       }}
+  
+    async function fetchLikeCancel() {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.get("http://localhost:8080/user/unlike?boardId="+board_id);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
+    if (fillColor == fillheart) {
+      fetchLikeCancel();
+      mainPage.user_board_like.pop(board_id);
+    } else {
       fetchLike();
-  }
-
-  // 게시물의 좋아요 상태를 토글하는 함수
-  const toggleLike = (postId) => {
-    setLikedPosts((prevLikedPosts) => ({
-      ...prevLikedPosts,
-      [postId]: !prevLikedPosts[postId], // 현재 상태를 반전시킴
-    }));
-  };
+      mainPage.user_board_like.push(board_id);
+    }
+}
 
   return (
     <f.Totalframe>
@@ -128,20 +136,19 @@ const UserMainPage = () => {
             
           </HashTag>
           {/* 코디네이터 프로필 */}
-          {mainPage?.map((data)=>(
+          {mainPage?.pages.map((data)=>(
             <CoordinatorProfile>
               <Link to={`/postdetail/${data.board_id}`}>
                 <CoordinatorMainImg boardImg={data.board_image}
                 likeIncrease={(e) => {
                   e.preventDefault(); // 링크 이동을 막음
                   likeIncrease(data.board_id); // 하트 클릭 이벤트 처리
-                  toggleLike(data.board_id);
                 }}
-                fillColor={likedPosts[data.board_id] ? fillheart : heart}/>
+                fillColor={mainPage.user_board_like.includes(data.board_id) ? fillheart : heart}/>
               </Link>
             <Link to={`/outerprofile/${data.coordinator_id}`}>
               <CoordinatorInfo name={data.nickname} profileImg={data.profile_image}
-              requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles}/>
+              requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles} linkState={false}/>
             </Link>
           </CoordinatorProfile>
           ))}

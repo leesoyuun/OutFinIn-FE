@@ -11,6 +11,7 @@ export const TotalNavigation = styled.div`
     border-top: 1px solid #C4C4C4;
     position: fixed;
     bottom: 0;
+    background-color: #fff;
 `
 
 export const SubNavigation = styled.div`
