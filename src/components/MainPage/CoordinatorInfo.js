@@ -78,12 +78,12 @@ const CoordinatorInfo = (props) => {
                 <CoordinatorGrade>
                     <Rank src={rank1}/>
                     <CoordinatorName>{props.name}</CoordinatorName>
-                    <Link to={'//'+props.snsLink} target='_blank'>
+                    {props.linkState?<Link to={'//'+props.snsLink} target='_blank'>
                         <Instagram>
                             <InstagramImg src={instagram}/>
                             Instagram
                         </Instagram>
-                    </Link>
+                    </Link>: null}
                     </CoordinatorGrade>
                 <CategoryBox>
                 {props.styles?.map((style)=>(

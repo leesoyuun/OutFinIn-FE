@@ -146,7 +146,7 @@ const UserMainPage = () => {
               </Link>
             <Link to={`/outerprofile/${data.coordinator_id}`}>
               <CoordinatorInfo name={data.nickname} profileImg={data.profile_image}
-              requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles}/>
+              requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles} linkState={false}/>
             </Link>
           </CoordinatorProfile>
           ))}
