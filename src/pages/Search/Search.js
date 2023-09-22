@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import styled from "styled-components";
 import axios from 'axios';
 import Navigation from "../../components/Navigation/Navigation";
@@ -63,6 +63,7 @@ const Search = () => {
   const [search, setSearch] = useState(null);
   const [firstPage, setFirstPage] = useState(null);
   const containerRef = useRef(null);
+  const {board_id,coordinator_id} = useParams();
 
   const handelMouseDownEvent = (e) => {
     setDragging(true);
@@ -93,6 +94,7 @@ const Search = () => {
         axios.defaults.withCredentials=true;
         const res = await axios.get("http://localhost:8080/search/main");
         setFirstPage(res.data);
+        console.log(res.data)
       }catch(error){
         console.error(error);
       }
@@ -167,7 +169,6 @@ const Search = () => {
 
 
     return (
-
       <f.Totalframe>
         <f.SubScreen>
           <f.ScreenComponent>
@@ -189,10 +190,10 @@ const Search = () => {
             <MainText>이런 스타일은 어떠신가요? 👀</MainText>
             {firstPage?.map((data) => (
               <>
-              <Link to='/postdetail'>
-              <CoordinatorMainImg boardImg={data.board_image}/>
+              <Link to={`/postdetail/${data.board_id}`}>
+                <CoordinatorMainImg boardImg={data.board_image}/>
               </Link>
-              <Link to='/outerprofile'>
+              <Link to={`/outerprofile/${data.coordinator_id}`}>
                 <CoordinatorInfo name={data.nickname} profileImg={data.profile_image} requestCnt={data.request_count}
                 likeCnt={data.total_like} styles={data.styles}/>
               </Link>
