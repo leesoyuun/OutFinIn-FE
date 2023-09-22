@@ -130,7 +130,6 @@ function BottomSheet(props) {
 
           }
         }
-        props.addSelectedTag(style);
     }   
 
     const styleCategoryBoxes = props.styleCategories.map((category, index) => (
@@ -148,8 +147,9 @@ function BottomSheet(props) {
       />
     ))
 
-    const isopenChange = () => {
-      props.openState(!props.isOpen)
+    // 선택해제
+    const resetCategories = () => {
+      setSelectedStyles([])
     }
 
     return (
@@ -159,8 +159,7 @@ function BottomSheet(props) {
         <BottomSheetContent>
             <ModalTitle>
                 추가하실 스타일<br/>태그를 골라주세요
-                <img src={XButton} onClick={isopenChange} />
-                {/* <BottomSheet openState={setIsOpen} isOpen={isOpen}/> */}
+                <img src={XButton} onClick={props.openState} />  
             </ModalTitle>
             <Category>{styleCategoryBoxes}</Category>
             <Hr/>
@@ -180,7 +179,7 @@ function BottomSheet(props) {
         </BottomSheetContent>
     </StyledBottomSheet>
     <FooterBottomSheet>
-      <Clear>선택 해제</Clear>
+      <Clear onClick={resetCategories}>선택 해제</Clear>
       <ApplyCodi onClick={props.sendData}>코디 확인하기</ApplyCodi>
     </FooterBottomSheet>
     </>

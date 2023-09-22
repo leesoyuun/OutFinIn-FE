@@ -7,6 +7,8 @@ import BigStyleCategoryBox from "../../components/Common/BigStyleCategoryBox";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
 import BottomSheet from "../../components/MainPage/BottomSheet";
+import heart from '../../assets/img/heart.svg';
+import fillheart from '../../assets/img/fillheart.svg';
 import axios from 'axios'; 
 
 
@@ -33,13 +35,14 @@ const HashTag = styled.div`
 const CoordinatorProfile = styled.div`
   margin-top:3.08vh;
 `;
-
 const UserMainPage = () => {
+  const initialLikedPosts = {};
   const [selectStyle, setSelectStyle] = useState('이지캐주얼');
   const [dragging, setDragging] = useState(false);
   const [clickPoint, setClickPoint] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [likedPosts, setLikedPosts] = useState(initialLikedPosts);
   const [mainPage, setMainPage] = useState(null);
   
   const containerRef = useRef(null);
@@ -75,13 +78,45 @@ const UserMainPage = () => {
       try{
         axios.defaults.withCredentials=true;
         const res = await axios.get("http://localhost:8080/main/user");
-        setMainPage(res.data)
+        setMainPage(res.data);
       }catch(error){
         console.error(error);
       }
     }
     fetchMainPage();
   }, [])
+
+  //like function
+  const [fillColor, setFillColor] = useState(heart);
+
+  const likeIncrease = (board_id) => {
+    console.log(board_id)
+    console.log(mainPage.user_board_like) 
+    async function fetchLike(){
+      try{
+          axios.defaults.withCredentials=true;
+          const res = await axios.get("http://localhost:8080/user/like?boardId="+board_id);
+      }catch(error){
+          console.error(error);
+      }}
+  
+    async function fetchLikeCancel() {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.get("http://localhost:8080/user/unlike?boardId="+board_id);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
+    if (fillColor == fillheart) {
+      fetchLikeCancel();
+      mainPage.user_board_like.pop(board_id);
+    } else {
+      fetchLike();
+      mainPage.user_board_like.push(board_id);
+    }
+}
 
   return (
     <f.Totalframe>
@@ -101,13 +136,19 @@ const UserMainPage = () => {
             
           </HashTag>
           {/* 코디네이터 프로필 */}
-          {mainPage?.map((data)=>(
+          {mainPage?.pages.map((data)=>(
             <CoordinatorProfile>
-              <Link>
-            <CoordinatorMainImg boardImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.board_image}/>
-            </Link>
+              <Link to={`/postdetail/${data.board_id}`}>
+                <CoordinatorMainImg boardImg={data.board_image}
+                likeIncrease={(e) => {
+                  e.preventDefault(); // 링크 이동을 막음
+                  likeIncrease(data.board_id); // 하트 클릭 이벤트 처리
+                }}
+                fillColor={mainPage.user_board_like.includes(data.board_id) ? fillheart : heart}/>
+              </Link>
             <Link to={`/outerprofile/${data.coordinator_id}`}>
-              <CoordinatorInfo name={data.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.profile_image} requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles}/>
+              <CoordinatorInfo name={data.nickname} profileImg={data.profile_image}
+              requestCnt={data.request_count} likeCnt={data.total_like} styles={data.styles} linkState={false}/>
             </Link>
           </CoordinatorProfile>
           ))}

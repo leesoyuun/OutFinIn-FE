@@ -14,9 +14,11 @@ import ChatRoom from "./pages/Chat/ChatRoom";
 import OuterMyPage from "./pages/MyPage/OuterMyPage";
 import UserMyPage from "./pages/MyPage/UserMyPage";
 import EditCoProfile from "./pages/MyPage/EditCoProfile";
+import EditUserProfile from "./pages/MyPage/EditUserProfile";
 import OuterRankInfo from "./pages/MyPage/OuterRankInfo";
 import CoAllCodies from "./pages/MyPage/CoAllCodies";
 import CoReviews from "./pages/MyPage/CoReviews";
+import LikeCodies from "./pages/MyPage/LikeCodies";
 
 function App() {
   return (
@@ -33,7 +35,7 @@ function App() {
             <Route path="/getstyle" element={<GetStyle/>}/>
             <Route path="/joinsuccess" element={<JoinSuccess />} />
             <Route path="/outerprofile/:coordinator_id" element={<OuterProfile />} />
-            <Route path="/postdetail" element={<PostDetail />} />
+            <Route path="/postdetail/:board_id" element={<PostDetail />} />
             <Route path="/writenewpost" element={<WriteNewPost />} />
             <Route path="/search" element={<Search />} />
             <Route path="/searchfilter" element={<SearchFilter />} />
@@ -42,9 +44,12 @@ function App() {
             <Route path="/outermypage" element={<OuterMyPage />} />
             <Route path="/usermypage" element={<UserMyPage />} />
             <Route path="/editcoprofile" element={<EditCoProfile />} />
+            <Route path="/edituserprofile" element={<EditUserProfile />} />
             <Route path="/outerrankinfo" element={<OuterRankInfo/>}/>
             <Route path="/coallcodies" element={<CoAllCodies/>}/>
             <Route path="/coreviews" element={<CoReviews/>}/>
+            <Route path="/likecodies" element={<LikeCodies/>}/>
+            
         </Routes>
       </Router>
     </div>

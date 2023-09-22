@@ -128,15 +128,19 @@ const UserMyPage = () => {
                   <BigStyleCategoryBox content={'#'+data}/>
                 ))}
               </UserCategory>
-              <EditProfile>프로필 편집</EditProfile>
+              <Link to={'/edituserprofile'}>
+                <EditProfile>프로필 편집</EditProfile>
+              </Link>
               <MyPageMenu mycodi>
                 <Icon src={Hanger}/>
                 <MyPageDescribe>내가 받은 코디</MyPageDescribe>
               </MyPageMenu>
-              <MyPageMenu>
-                <Icon src={Heart}/>
-                <MyPageDescribe>좋아요 누른 코디</MyPageDescribe>
-              </MyPageMenu>
+              <Link to={'/likecodies'}>
+                <MyPageMenu>
+                  <Icon src={Heart}/>
+                  <MyPageDescribe>좋아요 누른 코디</MyPageDescribe>
+                </MyPageMenu>
+              </Link>
               <MyPageMenu>
                 <Icon src={Review}/>
                 <MyPageDescribe>내가 쓴 리뷰 보기</MyPageDescribe>

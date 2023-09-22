@@ -26,7 +26,7 @@ export const SubScreen = styled.div`
 `;
 
 export const ScreenJoin = styled.div`
-  padding-top: 85px;
+  padding-top: 25px;
   display: flex;
   flex-direction: column;
 `
