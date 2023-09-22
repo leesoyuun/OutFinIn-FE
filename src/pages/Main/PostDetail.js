@@ -43,6 +43,7 @@ const PostDetail = (props) => {
           "http://localhost:8080/board/show?id="+board_id
         );
         setPost(res.data);
+        console.log(res.data)
       } catch (error) {
         console.error(error);
       }
@@ -100,7 +101,7 @@ const PostDetail = (props) => {
           </ReviewText> */}
         </f.ScreenComponent>
       </f.SubScreen>
-      <BottomPrice/>
+      {localStorage.getItem('mode') == 1 ? null : <BottomPrice/>}
     </f.Totalframe>
     )
 }
