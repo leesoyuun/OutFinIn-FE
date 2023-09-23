@@ -121,7 +121,7 @@ const OuterProfile = () => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={page.nickname} styles={page.styles} profileImg={page.profile_image} linkState={true}/>
+          <CoordinatorInfo name={page.nickname} styles={page.styles} profileImg={page.profile_image} linkState={true} snsLink={page.sns_url}/>
           <Grades likeCnt={page.total_like} requestCnt={page.request_count}/>
           <CoordinatorIntro>{page.content}</CoordinatorIntro>
           {/* 게시물 목록 */}

@@ -87,8 +87,9 @@ const EditUserProfile= () => {
     const [female, setFemale] = useState(false);
     const [height, setHeight] = useState("");
     const [weight, setWeight] = useState("");
-    const [pass, setPass] = useState(false);
+    const [pass, setPass] = useState(true);
     const [nickname, setNickname] = useState("");
+    const [firstNickname, setFirstNickname] = useState("");
     const [curValue, setCurValue] = useState({
         nickname: "",
         height: "",
@@ -101,9 +102,15 @@ const EditUserProfile= () => {
     const nicknameRef = useRef(null);
     const navigate = useNavigate();
 
+    
+
     const handleClickOutside = async ({ target }) => {
 
-        if (nicknameRef.current && !nicknameRef.current.contains(target) && checkNickname !== nickname) {
+        if (firstNickname === nickname) {
+            setPass(true);
+        }
+
+        if (nicknameRef.current && !nicknameRef.current.contains(target) && checkNickname !== nickname && firstNickname !== nickname) {
             // axios 코드 작성 하면 됨
             async function fetchNickname(){
                 try {
@@ -115,6 +122,7 @@ const EditUserProfile= () => {
 
                     } else {
                         setPass(false);
+                        setCheckNickname('');
                     }
                   } catch (error) {
                     console.error(error);
@@ -179,6 +187,7 @@ const EditUserProfile= () => {
             const res = await axios.get("http://localhost:8080/user/info");
             setCurValue(res.data);
             setNickname(res.data.nickname);
+            setFirstNickname(res.data.nickname);
             setHeight(res.data.height);
             setWeight(res.data.weight);
             if (res.data.gender === 'MALE') {

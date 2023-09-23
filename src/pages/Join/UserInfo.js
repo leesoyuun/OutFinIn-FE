@@ -88,6 +88,7 @@ const UserInfo = () => {
 
                     } else {
                         setPass(false);
+                        setCheckNickname('');
                     }
                   } catch (error) {
                     console.error(error);

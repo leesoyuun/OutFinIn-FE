@@ -6,32 +6,35 @@ import styled from "styled-components";
 import heart from '../../assets/img/heart.svg';
 import fillheart from '../../assets/img/fillheart.svg';
 
-const Liketxt = styled.div`
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: 0.064px;
-    margin-top:19px;
-    margin-left: 15px;
+const Category = styled.div`
+  margin-top: 15px;
+  margin-bottom: 11px;
+  color: #000;
+  font-family: Noto Sans CJK KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.175px;
 `;
 
 const TotalPost = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
+  display: grid;
+  gap: 4px;
+  grid-template: repeat(4, 175px)/repeat(2, 175px);
+  margin-bottom: 20px;
 `;
 const PostImg = styled.div`
-    position: relative;
-    margin-top: 8px;
-    margin-left: 15px;
+  position: relative;
+  width: 175px;
+  height: 175px;
 `;
 
 const MainImg = styled.img`
-    border-radius: 18px;
-    width: 172px;
-    height: 201px;
-    object-fit: cover;
+  width: 175px;
+  height: 175px;
+  border-radius: 18px;
+  object-fit: cover;
 `;
 
 const Postname = styled.div`
@@ -109,9 +112,11 @@ const LikeCodies = () => {
     }
     return(
     <f.Totalframe>
-      <GobackContainer like/>
-          <Liketxt>좋아요 누른 코디</Liketxt>
-            <TotalPost>
+      <f.SubScreen>
+        <f.ScreenComponent>
+          <GobackContainer like/>
+          <Category>좋아요 누른 코디</Category>
+          <TotalPost>
             {boardLike?.boards?.map((post) => (
                 <PostImg key={post.board_id}>
                     <MainImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+post.image_url} />
@@ -119,9 +124,11 @@ const LikeCodies = () => {
                 <Heart src={boardLike.user_board_like.includes(post.board_id) ? fillheart : heart}
                 onClick={(e)=>likeIncrease(post.board_id,e)}
                 />
-                </PostImg>
-            ))}
-            </TotalPost>
+              </PostImg>
+          ))}
+          </TotalPost>
+        </f.ScreenComponent>
+      </f.SubScreen>
     </f.Totalframe>
     )
 }
