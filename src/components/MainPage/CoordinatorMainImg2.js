@@ -19,6 +19,7 @@ const Img = styled.img`
     width: 100%;
     height: 46.44vh;
     border-radius: 18px;
+    object-fit: cover;
 `;
 const CoordinatorMainImg2 = (props) => {
     const [fillColor, setFillColor] = useState(heart);

@@ -112,7 +112,7 @@ const OuterMyPage = () => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={outerMyPage.nickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+outerMyPage.image_url} styles={outerMyPage.styles}/>
+          <CoordinatorInfo name={outerMyPage.nickname} profileImg={outerMyPage.image_url} styles={outerMyPage.styles}/>
           <Grades likeCnt={outerMyPage.total_like} requestCnt={outerMyPage.request_count} />
           {/* 마이페이지 내용 */}
           <CoordinatorIntro>

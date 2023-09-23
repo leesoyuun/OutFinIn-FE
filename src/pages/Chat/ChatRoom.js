@@ -130,9 +130,9 @@ const SendButton=styled.button`
 `
 
 const ChatRoom = () => {
-    const [content, setContent] = useState('');
+    const [content, setContent] = useState(''); //input창의 메시지 저장
     const [isSend, setIsSend]=useState(false);
-    const inputRef = useRef("");
+    const [text, setText] = useState(''); //확정메시지 (말풍선)
 
     const handleInput = (e) => {
         setContent(e.target.value);
@@ -140,6 +140,8 @@ const ChatRoom = () => {
 
     const handleSend=() => {
         setIsSend(true);
+        setText(content);
+        setContent('');
     }
 
   return (
@@ -164,15 +166,15 @@ const ChatRoom = () => {
             <ChatBubble name={null} isCurrentUser={true} message={'이제 9월이니까 피터님은 가을 코디를 준비해두면 좋을 것 같습니다! 저는 트렌치 코트와 청바지 조합을 추천드립니다. 저의 코디 게시물을 공유해드릴테니, 마음에 드는 코디가 있으시면 말씀해주세요! 그 코디와 유사한 방향으로 도와드리겠습니다.'}/>
             <ChatBubble name={'뉴비피터'} isCurrentUser={false} message={'넵 감사합니다.'}/><ChatBubble name={'뉴비피터'} isCurrentUser={false} message={'요즘 어떤 옷을 입어야 할 지 고민이에요. 추천해주실 수 있나요? 아우터님?'}/>
             {isSend? 
-            (<ChatBubble name={null} isCurrentUser={true} message={content}/>)
+            (<ChatBubble name={null} isCurrentUser={true} message={text}/>)
             : null
             }
-
+            
         </ChatScreen>
       </SubScreen>
       {/* 입력 창 띄어주기 */}
       <InputContainer>
-        <GetContent placeholder="메세지 보내기" value={content} onChange={handleInput} ref={inputRef}/>
+        <GetContent placeholder="메세지 보내기" value={content} onChange={handleInput} />
         <SendButton onClick={handleSend}>전송</SendButton>
       </InputContainer>
     </Totalframe>

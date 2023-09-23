@@ -13,6 +13,11 @@ const CoordinatorInfos = styled.div`
     color: #000;
 `;
 
+const CoImgContainer=styled.div`
+    width: 61px;
+    height: 61px;
+`
+
 const CoordinatorImg = styled.img`
     width: 61px;
     height: 61px;
@@ -56,6 +61,7 @@ const Hanger = styled.div`
 
 const HangerImg = styled.img`
     margin-right: 5px;
+    object-fit: cover;
 `;
 
 const Star = styled.div`
@@ -73,6 +79,7 @@ const Star = styled.div`
 
 const StarImg = styled.img`
     margin-right: 7px;
+    object-fit: cover;
 `;
 
 const CategoryBox = styled.div`
@@ -82,7 +89,9 @@ const CategoryBox = styled.div`
 const CoordinatorInfo2 = (props) => {
     return(
         <CoordinatorInfos>
-            <CoordinatorImg src={props.profileImg}></CoordinatorImg>
+            <CoImgContainer>
+                <CoordinatorImg src={props.profileImg}></CoordinatorImg>
+            </CoImgContainer>
             <CoordinatorSubInfo>
                 <CoordinatorGrade>
                     <f.Flex>

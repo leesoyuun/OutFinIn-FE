@@ -78,6 +78,7 @@ const OuterProfile = () => {
 
   useEffect(() => {
     if (coordinator_id) {
+      console.log(coordinator_id);
       async function fetchData() {
         try {
           axios.defaults.withCredentials = true;
@@ -85,6 +86,7 @@ const OuterProfile = () => {
             "http://localhost:8080/coordinator/page?id=" + coordinator_id
           );
           setPage(res.data);
+          console.log(res.data);
         } catch (error) {
           console.error(error);
         }
