@@ -63,7 +63,7 @@ const Search = () => {
   const [search, setSearch] = useState(null);
   const [firstPage, setFirstPage] = useState(null);
   const containerRef = useRef(null);
-  const {board_id,coordinator_id} = useParams();
+  const {board_id, coordinator_id} = useParams();
 
   const handelMouseDownEvent = (e) => {
     setDragging(true);

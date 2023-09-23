@@ -109,6 +109,7 @@ const CoInfo = () => {
                         setPhotoName(nickname+formattedDate+'.jpg');
                     } else {
                         setPass(false);
+                        setCheckNickname('');
                     }
                   } catch (error) {
                     console.error(error);

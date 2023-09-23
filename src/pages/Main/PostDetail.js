@@ -7,6 +7,7 @@ import BottomPrice from "../../components/MainPage/BottomPrice";
 import GobackContainer from "../../components/Common/GobackContainer";
 import CoordinatorInfo from "../../components/MainPage/CoordinatorInfo";
 import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
+import Navigation from "../../components/Navigation/Navigation";
 import heart from '../../assets/img/heart.svg';
 import fillheart from '../../assets/img/fillheart.svg';
 import Grades from '../../components/MainPage/Grades';
@@ -84,7 +85,7 @@ const PostDetail = (props) => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={post.nickname} profileImg={post.profile_image} styles={styleTag} snsLink={post.sns_url} linkState={true}/>
+          <CoordinatorInfo name={post.nickname} profileImg={post.profile_image} styles={styleTag} snsLink={post.sns_url} linkState={post.sns_url!==''}/>
           <Grades likeCnt={post.like_count} requestCnt={post.request_count}/>
           <CoordinatorIntro>
             {post.content}
@@ -102,6 +103,7 @@ const PostDetail = (props) => {
         </f.ScreenComponent>
       </f.SubScreen>
       {localStorage.getItem('mode') == 1 ? null : <BottomPrice/>}
+      <Navigation type={null}/>
     </f.Totalframe>
     )
 }

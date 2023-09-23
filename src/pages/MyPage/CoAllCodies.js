@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+import {Link} from 'react-router-dom';
 import * as f from "../../components/Common/CommonStyle";
 import GobackContainer from "../../components/Common/GobackContainer";
 import styled from "styled-components";
@@ -75,12 +76,14 @@ const CoAllCodies = () => {
           <Category>전체 코디</Category>
           <EveryContainer>
             {allCodies?.map((data)=>(
-              <PostContainer>
-                <PostImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.image_url} />
-                <CategoryContainer>
-                  {/* 글 제목 넣기 */}
-                </CategoryContainer> 
-              </PostContainer>
+              <Link to={`/postdetail/${data.board_id}`}>
+                <PostContainer>
+                  <PostImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.image_url} />
+                  <CategoryContainer>
+                    {/* 글 제목 넣기 */}
+                  </CategoryContainer> 
+                </PostContainer>
+              </Link>
             ))}
           </EveryContainer>
 
