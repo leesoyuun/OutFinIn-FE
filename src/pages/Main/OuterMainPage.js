@@ -35,7 +35,19 @@ const CoordinatorProfile = styled.div`
 
 const Rank=styled.div`
   position: absolute;
-
+  top: 0px;
+  left: -7px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: ${(props)=> props.top? 'white' : '#4F44E2'};
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 22px;
+  border: 1px solid ${(props)=> props.top? '#4F44E2':'#E3DFFF'};
+  filter: ${(props)=> props.top? null:'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'};
+  background: ${(props)=> props.top? 'linear-gradient(148deg, #4F44E2 14.45%, #C4C0FF 82.33%)' : 'linear-gradient(148deg, #A39DFF 14.45%, #E0DEFF 82.33%)'};
 `
 
 const WriteButtonContainer=styled.div`
@@ -43,12 +55,19 @@ const WriteButtonContainer=styled.div`
   right: 10px;
   bottom: 17vh;
 `
+const Line=styled.div`
+    width: 100%;
+    height: 0.7px;
+    background: #F1EDF1;
+`
 
 const OuterMainPage = () => {
-    const [selectStyle, setSelectStyle] = useState('이지캐주얼');
+    const [selectStyle, setSelectStyle] = useState('');
     const [dragging, setDragging] = useState(false);
     const [clickPoint, setClickPoint] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
+    const [outerMyPage,setOuterMyPage] = useState(''); //사용자 정보 가져오기
+    const [filteredStyle, setFilteredStyle]=useState([]);
     const containerRef = useRef(null);
 
     const [mainPage, setMainPage] = useState(null);
@@ -75,14 +94,13 @@ const OuterMainPage = () => {
       setSelectStyle(style);
     }
 
-    // 백엔드 통신
+    // 백엔드 통신-코디네이터들 정보 가져오기
     useEffect(()=>{
       async function fetchMainPage(){
         try{
           axios.defaults.withCredentials=true;
           const res = await axios.get("http://localhost:8080/main/coordinator");
           setMainPage(res.data)
-          console.log(res.data);
         }catch(error){
           console.error(error);
         }
@@ -90,31 +108,49 @@ const OuterMainPage = () => {
       fetchMainPage();
     }, [])
 
+      // 백엔드 통신-사용자 스타일 가져오기
+      useEffect(()=>{
+        async function fetchMainPage(){
+          try{
+            axios.defaults.withCredentials=true;
+            const res = await axios.get("http://localhost:8080/coordinator/mypage");
+            setOuterMyPage(res.data)
+            setFilteredStyle(res.data.styles);
+            console.log(filteredStyle);
+          }catch(error){
+            console.error(error);
+          }
+        }
+        fetchMainPage();
+      }, [])
+
     return(
     <f.Totalframe>
       <f.SubScreen>
         <f.ScreenComponent>
             {/* header */}
             <MainText>인기 아우터들의<br/>코디를 둘러보세요 👀</MainText>
-            <HashTag ref={containerRef}
+            {/* <HashTag ref={containerRef}
                 onMouseDown={handelMouseDownEvent}
                 onMouseLeave={() => setDragging(false)}
                 onMouseUp={() => setDragging(false)}
                 onMouseMove={handelMouseMoveEvent}>
-                <BigStyleCategoryBox content={'#미니멀'} onClick={() => changeStyle('미니멀')} isSelected={selectStyle === '미니멀'} />
-                <BigStyleCategoryBox content={'#이지캐주얼'} onClick={() => changeStyle('이지캐주얼')} isSelected={selectStyle === '이지캐주얼'} />
-                <BigStyleCategoryBox content={'#스트릿'} onClick={() => changeStyle('스트릿')} isSelected={selectStyle === '스트릿'}/>
-                <BigStyleCategoryBox content={'#봄 코디'} onClick={() => changeStyle('봄 코디')} isSelected={selectStyle === '봄 코디'}/>
+                {outerMyPage?.styles?.map((style)=>(
+                  <BigStyleCategoryBox content={'#'+style} onClick={() => changeStyle(style)} isSelected={filteredStyle.includes(style)} />
+                ))}
                 <BigStyleCategoryBox content={'+'}/>
-          </HashTag>
+          </HashTag> */}
           {/* 코디네이터 프로필 */}
           {mainPage?.map((data, index)=>(
-            <CoordinatorProfile>
-              <Link to={`/outerprofile/${data.coordinator_id}`}>
-                <CoordinatorInfo name={data.nickname} profileImg={data.profile_image} likeCnt={data.total_like} requestCnt={data.request_count} styles={data.styles}/>
-              </Link>
-              <Rank number={index} />
-            </CoordinatorProfile>
+            <>
+              <CoordinatorProfile>
+                <Link to={`/outerprofile/${data.coordinator_id}`}>
+                  <CoordinatorInfo name={data.nickname} profileImg={data.profile_image} likeCnt={data.total_like} requestCnt={data.request_count} styles={data.styles}/>
+                </Link>
+                <Rank top={index===0||index===1||index===2}>{index+1}</Rank>
+              </CoordinatorProfile>
+              <Line />
+            </>
           ))}
           {/* 글 작성 버튼 */}
           <WriteButtonContainer>

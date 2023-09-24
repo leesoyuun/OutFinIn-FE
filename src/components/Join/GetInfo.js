@@ -33,7 +33,7 @@ const InputInfo = styled.input`
 `;
 
 const Unit = styled.div`
-    color: ${(props) => props.nowinput ? '#100069' : '#ADAAAF'};
+    color: ${(props) => props.active ? '#100069' : '#ADAAAF'};
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.175px;

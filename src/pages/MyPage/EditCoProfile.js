@@ -475,7 +475,7 @@ const EditCoProfile = () => {
                 </f.Flex>
                 {/*프로필 내용 입력받기 (1/20)-20글자 이내*/}
                 <c.TextContainer>
-                    <c.TextArea onChange={changeContent} maxLength={maxInputLength} value={content} placeholder="프로필을 간단하게 적어주세요!" />
+                    <c.TextArea onChange={changeContent} maxLength={maxInputLength} value={content} placeholder="프로필을 간단하게 적어주세요!" onClick={()=>setIsClicked('설명')}/>
                     <c.TextCount><span>{inputCount}</span><span>/20 자</span></c.TextCount>
                 </c.TextContainer>
             </f.ScreenComponent>
