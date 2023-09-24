@@ -47,7 +47,6 @@ const EditProfile = styled.div`
   border-radius: 5px;
   border: 1px solid #787680;
   margin-top: 1.42vh;
-
   color: #787680;
   font-size: 14px;
   font-style: normal;
@@ -77,6 +76,7 @@ const MyPageDescribe = styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.056px;
+  cursor: pointer;
 `;
 const AccountBtns = styled.div`
   display: flex;
@@ -93,6 +93,7 @@ const AccountBox = styled.div`
   margin-right: ${(props)=>props.logout ? '7.5px' : '0px' };
   margin-left: ${(props)=>props.delete ? '7.5px' : '0px' };
   color: ${(props)=>props.delete ? '#690005': 'black'};
+  cursor: pointer;
 `;
 
 const UserMyPage = () => {
@@ -121,9 +122,9 @@ const UserMyPage = () => {
       try{
         axios.defaults.withCredentials=true;
         const res = await axios.post("http://localhost:8080/logout");
-        navigate('/');
       }catch(error){
         console.error(error);
+        navigate('/');
       }
     }
     fetchLogOut();

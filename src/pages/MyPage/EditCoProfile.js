@@ -30,6 +30,7 @@ const Male = styled.div`
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.175px;
+    cursor: pointer;
 `
 
 const Female = styled.div`
@@ -46,6 +47,7 @@ const Female = styled.div`
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.175px;
+    cursor: pointer;
 `
 
 const HashTag = styled.div`
@@ -69,6 +71,7 @@ const InputContaier = styled.div`
 
 const EditCoProfile = () => {
     const navigate = useNavigate();
+    const [isClicked, setIsClicked]=useState('');
     const [male, setMale] = useState(false);
     const [female, setFemale] = useState(false);
     const [inputCount, setInputCount] = useState(0);
@@ -347,6 +350,7 @@ const EditCoProfile = () => {
     };
 
     const changeGender = (g) => {
+        setIsClicked('성별');
         if (g === 1) {
             setMale(true);
             setFemale(false);
@@ -453,7 +457,7 @@ const EditCoProfile = () => {
                 </HashTag>
                 {/*정보 수정하기*/}
                 <InputContaier>
-                    <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef} />
+                    <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef} click={()=>setIsClicked('닉네임')} nowinput={isClicked==='닉네임'}/>
                     <AiOutlineCheckCircle fill={pass ? '#4F44E2' : '#C9C5CA'} />
                     <Male
                         onClick={() => changeGender(1)}
@@ -463,11 +467,11 @@ const EditCoProfile = () => {
                         selected={female}>여</Female>
                 </InputContaier>
                 <f.Flex>
-                    <GetInfo infoName={'키'} unit={'cm'} changeValue={changeHeight} inputValue={height} />
-                    <GetInfo infoName={'체중'} unit={'kg'} changeValue={changeWeight} inputValue={weight} />
+                    <GetInfo infoName={'키'} unit={'cm'} changeValue={changeHeight} inputValue={height} click={()=>setIsClicked('키')} nowinput={isClicked==='키'}/>
+                    <GetInfo infoName={'체중'} unit={'kg'} changeValue={changeWeight} inputValue={weight} click={()=>setIsClicked('체중')} nowinput={isClicked==='체중'}/>
                 </f.Flex>
                 <f.Flex>
-                    <GetInfo infoName={'SNS 링크'} changeValue={changeSns_url} inputValue={sns_url} />
+                    <GetInfo infoName={'SNS 링크'} changeValue={changeSns_url} inputValue={sns_url} click={()=>setIsClicked('SNS 링크')} nowinput={isClicked==='SNS 링크'}/>
                 </f.Flex>
                 {/*프로필 내용 입력받기 (1/20)-20글자 이내*/}
                 <c.TextContainer>

@@ -97,6 +97,7 @@ const GetContent=styled.input`
     width: 300px;
     border-radius: 25px;
     border: none;
+    cursor: pointer;
     &::placeholder{
         color: #ADAAAF;
         font-family: Noto Sans CJK KR;
@@ -127,6 +128,7 @@ const SendButton=styled.button`
     line-height: normal;
     letter-spacing: 0.056px;
     border: none;
+    cursor: pointer;
 `
 
 const ChatRoom = () => {
@@ -175,7 +177,7 @@ const ChatRoom = () => {
       {/* 입력 창 띄어주기 */}
       <InputContainer>
         <GetContent placeholder="메세지 보내기" value={content} onChange={handleInput} />
-        <SendButton onClick={handleSend}>전송</SendButton>
+        <SendButton onClick={handleSend} type="submit">전송</SendButton>
       </InputContainer>
     </Totalframe>
   );

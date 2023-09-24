@@ -13,6 +13,7 @@ const Box = styled.div`
     justify-content: center;
     align-items: center;
     white-space: nowrap;
+    cursor: pointer;
 `
 
 const Content = styled.div`

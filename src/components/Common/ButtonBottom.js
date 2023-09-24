@@ -19,6 +19,7 @@ const Btn = styled.button`
     position: fixed;
     bottom: 28px;
     text-decoration: none;
+    cursor: pointer;
 `
 
 const ButtonBottom = (props) => {

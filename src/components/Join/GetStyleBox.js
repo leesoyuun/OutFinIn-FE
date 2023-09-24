@@ -12,6 +12,7 @@ const Box = styled.div`
     color: ${(props) => (props.isSelected ? '#FFF' : '#787680')};
     margin-right: 12px;
     margin-bottom: 1.42vh;
+    cursor: pointer;
 `
 
 const Content = styled.div`

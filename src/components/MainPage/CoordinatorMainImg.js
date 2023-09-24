@@ -10,6 +10,7 @@ const Heart = styled.img`
     z-index: 2;
     top: 20px;
     right: 16px;
+    cursor: pointer;
 `
 
 const Img = styled.img`

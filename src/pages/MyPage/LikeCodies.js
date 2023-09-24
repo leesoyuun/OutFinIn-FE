@@ -28,6 +28,7 @@ const PostImg = styled.div`
   position: relative;
   width: 175px;
   height: 175px;
+  cursor: pointer;
 `;
 
 const MainImg = styled.img`
@@ -57,6 +58,7 @@ const Heart = styled.img`
     position: absolute;
     top: 13.82px;
     right: 13.76px;
+    cursor: pointer;
 `
 const LikeCodies = () => {
     const [fillColor, setFillColor] = useState(fillheart);

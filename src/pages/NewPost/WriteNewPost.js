@@ -37,6 +37,7 @@ const PhotoContainer = styled.div`
   position:relative;
   display: flex;
   gap: 14px;
+  cursor: pointer;
 `
 
 const Photo = styled.img`
@@ -64,6 +65,7 @@ const TextContainer = styled.div`
   position:relative; 
   display:inline-block; 
   margin-bottom: 30px;
+  cursor: pointer;
 `
 const TextArea = styled.textarea`
   padding: 20px 15px 60px 15px;
@@ -75,6 +77,7 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 300px;
   resize: none;
+  cursor: pointer;
   &::placeholder{
   color: #C8C5D0;
       font-size: 14px;
@@ -101,6 +104,7 @@ const TitleContainer = styled.input`
   font-weight: 700;
   line-height: normal;
   letter-spacing: 0.2px;
+  cursor: pointer;
   &::placeholder{
     color: var(--material-theme-ref-neutral-neutral-70, #ADAAAF);
     font-family: Noto Sans CJK KR;
@@ -132,6 +136,7 @@ const FinishBotton = styled.button`
   letter-spacing: 0.08px;
   text-decoration: none;
   margin-bottom: 37px;
+  cursor: pointer;
 `
 
 const WriteNewPost = () => {

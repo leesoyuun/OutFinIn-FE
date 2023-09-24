@@ -29,6 +29,7 @@ const InputLabel=styled.label`
 const InputBox=styled.div`
     display: flex;
     gap: 10px;
+    cursor: pointer;
 `
 const Input=styled.input`
     display: flex;
@@ -37,6 +38,7 @@ const Input=styled.input`
     align-items: center;
     border-radius: 5px;
     border: 1px solid #787680;
+    cursor: pointer;
     &::placeholder{
         color: #ADAAAF;
         font-family: Noto Sans KR;
@@ -45,10 +47,11 @@ const Input=styled.input`
         font-weight: 400;
         line-height: normal;
         letter-spacing: 0.175px;
+        cursor: pointer;
     }
     &:focus {
         outline: none; 
-        border: 1px solid #100069;
+        border: 2px solid #100069;
     }
 `
 
@@ -63,23 +66,27 @@ const EyeContainer=styled.div`
 
 const Email = styled.input`
     border-radius: 5px;
-    border: 1px solid ${props=> props.error? 'red': '#100069'};
+    border: 1px solid ${props=> props.error? '#fb0102': '#787680'};
     width: 151px;
     height: 35px;
     padding-left: 12px;
+    cursor: pointer;
     &:focus{
         outline:none;
+        border: 2px solid ${props=> props.error? '#fb0102': '#100069'};
     }
 `;
 
 const Domain = styled.select`
     border-radius: 5px;
-    border: 1px solid ${props=> props.error? 'red': '#100069'};
+    border: 1px solid ${props=> props.error? 'red': '#787680'};
     width: 171px;
     height: 35px;
     padding: 7px 0px 8px 12px;
+    cursor: pointer;
     &:focus{
         outline:none;
+        border: 2px solid ${props=> props.error? '#fb0102': '#100069'};
     }
 `;
 
@@ -103,7 +110,7 @@ const AuthenticateCode = styled.div`
     display: inline-flex;
     padding: 5px 0px 5px 10px;
     align-items: center;
-    border-bottom: 1px solid #100069;
+    border-bottom:  ${(props)=> props.getNum? '2px': '1px'} solid ${(props)=> props.getNum? '#100069': '#787680'}; 
 `;
 
 const AuthenticateInput = styled.input`
@@ -112,6 +119,7 @@ const AuthenticateInput = styled.input`
     font-style: normal;
     font-weight: 400;
     letter-spacing: 0.175px;
+    cursor: pointer;
     &:focus{
         outline:none;
     }
@@ -152,6 +160,12 @@ const InputEmail = () => {
     const [password, setPassword] = useState("");
     const [duplicateEmail, setDuplicateEmail] = useState(false);
     const [modal,setModal] = useState(false);
+    const [getNum, setGetNum] = useState(false);  //이메일이 중복되지 않았을 때, 인증번호 칸 상태 관리
+
+
+    useEffect(() => {
+        emailRef.current.focus();
+    }, [])
 
     const ChangeShow= () => {
         if (showpw){
@@ -172,7 +186,6 @@ const InputEmail = () => {
     // 이메일 중복검사와 코드 발송
     const sendEmail = () => {
         let Email = emailRef.current.value + '@' + domain;
-        setModal(true);
         setTimeout(() => {
             setModal(false);
           }, 2500);
@@ -185,10 +198,12 @@ const InputEmail = () => {
                     emailRef.current.value='';
                     setDuplicateEmail(true);
                 } 
-                // 중복되지 않는 경우 메일 전송
+                // 중복되지 않는 경우 메일 전송, 이메일 전송 성공 모달 띄어주기
                 else{
                     setTimer(timer => timer - 1);
                     setDuplicateEmail(false);
+                    setModal(true);
+                    setGetNum(true); // 중복되지 않는 경우, 인증번호 칸 활성화
                 }
               } catch (error) {
                 console.error(error);
@@ -287,15 +302,15 @@ const InputEmail = () => {
                             <InputContainer>
                                 <InputLabel>비밀번호</InputLabel>
                                 <InputBox>
-                                    <Input type={showpw ? 'text' : 'password'} placeholder="비밀번호를 입력해주세요" onChange={changePassword}></Input>
+                                    <Input type={showpw ? 'text' : 'password'} placeholder="비밀번호를 입력해주세요" onChange={changePassword} getNum={getNum}></Input>
                                     <EyeContainer onClick={ChangeShow}>
                                         <img src={showpw? eyeFilled: eyeUnfilled}></img>
                                     </EyeContainer>
                                 </InputBox>
                             </InputContainer>
                         ) : (
-                            <AuthenticateCode>
-                                <AuthenticateInput placeholder="인증 코드를 입력해주세요" onChange={inputCode}></AuthenticateInput>
+                            <AuthenticateCode getNum={getNum}>
+                                <AuthenticateInput placeholder="인증 코드를 입력해주세요" onChange={inputCode} ></AuthenticateInput>
                                 <div style={{display:'flex'}}>
                                     <Time>{min}:{sec< 10 ? '0' + sec : sec}</Time>
                                     <AiOutlineCheckCircle fill={pass? '#4F44E2' : '#C9C5CA'}/>

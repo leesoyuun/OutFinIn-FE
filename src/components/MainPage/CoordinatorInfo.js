@@ -13,6 +13,7 @@ const CoordinatorInfos = styled.div`
     margin-top: 2.36vh;
     margin-bottom: 1.06vh;
     color: #000;
+    cursor: pointer;
 `;
 
 const CoImgContainer=styled.div`

@@ -31,12 +31,14 @@ const LoginForm=styled.div`
 const GetInfoContainer=styled.div`
     margin-bottom: 7px;
     width: 100%;
+    cursor: pointer;
 `
 
 const InputInfo = styled.input`
     border: none;
     border-bottom: 2px solid var(--material-theme-sys-light-outline-variant, #C8C5D0);        
     padding: 10px;
+    cursor: pointer;
     &::placeholder{
         color: var(--material-theme-ref-neutral-variant-neutral-variant-80, #C8C5D0);
         font-family: Noto Sans KR;
@@ -77,6 +79,7 @@ const SocialLogo=styled.div`
 const LogoImg=styled.div`
     margin-right:2px;
     width: 40px;
+    cursor: pointer;
 `
 
 const SignUp=styled.div`
@@ -88,6 +91,7 @@ const SignUp=styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.175px;
+    cursor: pointer;
 `
 
 const Login = () => {

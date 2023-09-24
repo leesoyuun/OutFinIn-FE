@@ -12,6 +12,7 @@ const Img=styled.img`
     width: 9.5px;
     height: 18px;
     flex-shrink: 0;
+    cursor: pointer;
 `
 
 const GobackContainer = () => {
