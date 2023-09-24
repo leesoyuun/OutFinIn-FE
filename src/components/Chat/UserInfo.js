@@ -9,6 +9,7 @@ const UserInfos=styled.div`
     padding: 10px;
     border: none;
     border-bottom: 1px solid #C8C5D0;
+    cursor: pointer;
 `
 const InfoContainer=styled.div`
     display: flex;

@@ -17,6 +17,7 @@ const SearchBox = styled.div`
   border: 1px solid #ADAAAF;
   margin-top:2.72vh;
   margin-bottom: 0.94vh;
+  cursor: pointer;
 `;
 
 const SearchInput = styled.input`
@@ -52,6 +53,7 @@ const Button=styled.div`
   font-weight: 400;
   line-height: normal;
   letter-spacing: 0.056px;
+  cursor: pointer;
 `
 
 const ChatList = () => {

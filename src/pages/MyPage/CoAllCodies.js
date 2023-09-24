@@ -42,6 +42,7 @@ const PostContainer=styled.div`
   position: relative;
   width: 175px;
   height: 175px;
+  cursor: pointer;
 `
 
 const PostImg=styled.img`

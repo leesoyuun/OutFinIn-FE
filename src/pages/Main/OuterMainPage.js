@@ -30,7 +30,13 @@ const HashTag = styled.div`
 
 const CoordinatorProfile = styled.div`
   margin-top:3.08vh;
+  position: relative;
 `;
+
+const Rank=styled.div`
+  position: absolute;
+
+`
 
 const WriteButtonContainer=styled.div`
   position: absolute;
@@ -102,11 +108,12 @@ const OuterMainPage = () => {
                 <BigStyleCategoryBox content={'+'}/>
           </HashTag>
           {/* 코디네이터 프로필 */}
-          {mainPage?.map((data)=>(
+          {mainPage?.map((data, index)=>(
             <CoordinatorProfile>
               <Link to={`/outerprofile/${data.coordinator_id}`}>
                 <CoordinatorInfo name={data.nickname} profileImg={data.profile_image} likeCnt={data.total_like} requestCnt={data.request_count} styles={data.styles}/>
               </Link>
+              <Rank number={index} />
             </CoordinatorProfile>
           ))}
           {/* 글 작성 버튼 */}

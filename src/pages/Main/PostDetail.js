@@ -102,8 +102,7 @@ const PostDetail = (props) => {
           </ReviewText> */}
         </f.ScreenComponent>
       </f.SubScreen>
-      {localStorage.getItem('mode') == 1 ? null : <BottomPrice/>}
-      <Navigation type={null}/>
+      {localStorage.getItem('mode') == 1 ? <Navigation type={null}/> : <BottomPrice/>}
     </f.Totalframe>
     )
 }

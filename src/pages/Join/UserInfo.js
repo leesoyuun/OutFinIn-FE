@@ -14,7 +14,7 @@ import {AiOutlineCheckCircle} from 'react-icons/ai';
 import GetInfo from "../../components/Join/GetInfo";
 
 const BodyTypeText = styled.div`
-    color: #E4E1EC;
+    color: ${(props)=> (props.nowinput?'#100069':'#E4E1EC')};
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.175px;
@@ -36,6 +36,7 @@ const Male = styled.div`
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.175px;
+    cursor: pointer
 `
 
 const Female = styled.div`
@@ -53,6 +54,7 @@ const Female = styled.div`
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.175px;
+    cursor: pointer
 `
 
 const InputContaier=styled.div`
@@ -60,6 +62,7 @@ const InputContaier=styled.div`
     align-items: center;
 `
 const UserInfo = () => {
+    const [isClicked, setIsClicked]=useState('');
     const [straight,setStraight] = useState(false);
     const [wave,setWave] = useState(false);
     const [natural,setNatural] = useState(false);
@@ -136,6 +139,7 @@ const UserInfo = () => {
     }
 
     const changeGender = (g) => {
+        setIsClicked('성별');
         if (g === 1) {
             setMale(true);
             setFemale(false);
@@ -177,7 +181,7 @@ const UserInfo = () => {
                     <QuestionMode content={'더 정확한 추천을 위해 회원님의 \n 정보를 수집하고 있어요'} marginBottom={'2.87vh'}/>
                     {/* 개인정보 입력 */}
                     <InputContaier>
-                        <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef} />
+                        <GetInfo infoName={'닉네임'} changeValue={changeNickname} inputValue={nickname} check={nicknameRef} click={()=>setIsClicked('닉네임')} nowinput={isClicked==='닉네임'}/>
                         <AiOutlineCheckCircle fill={pass? '#4F44E2' : '#C9C5CA'}/>
                         <Female 
                             onClick={() => changeGender(2)}
@@ -187,25 +191,28 @@ const UserInfo = () => {
                             selected={male}>남</Male>
                     </InputContaier>
                     <f.Flex>
-                        <GetInfo infoName={'키'} unit={'cm'} inputValue={height} changeValue={changeHeight}/>
-                        <GetInfo infoName={'체중'} unit={'kg'} inputValue={weight} changeValue={changeWeight}/>
+                        <GetInfo infoName={'키'} unit={'cm'} inputValue={height} changeValue={changeHeight} click={()=>setIsClicked('키')} nowinput={isClicked==='키'}/>
+                        <GetInfo infoName={'체중'} unit={'kg'} inputValue={weight} changeValue={changeWeight} click={()=>setIsClicked('체중')} nowinput={isClicked==='체중'}/>
                     </f.Flex>
 
                     {/* 체형 선택 */}
-                    <BodyTypeText>체형</BodyTypeText>
-                    <BodyTpye
+                    <BodyTypeText nowinput={isClicked==='체형'}>체형</BodyTypeText>
+                    <BodyTpye 
+                        click={()=>setIsClicked('체형')}
                         bodyImg={bodyStraight}
                         bodyName={'스트레이트'}
                         choose={choose}
                         selected={straight}
                         bodyDescribe={'목이 다소 짧고 승모근이 발달\n바스트 라인이 높고 볼륨감이 있는 편'}/>
                     <BodyTpye
+                        click={()=>setIsClicked('체형')}
                         bodyImg={bodyWave}
                         bodyName={'웨이브'}
                         choose={choose}
                         selected={wave}
                         bodyDescribe={'목이 가늘고 긴 편 둥글고 얇은 어깨\n상반신 보다 하반신 볼륨이 발달'}/>
                     <BodyTpye
+                        click={()=>setIsClicked('체형')}
                         bodyImg={bodyNatural}
                         bodyName={'내추럴'}
                         choose={choose}

@@ -52,6 +52,7 @@ const Chat = styled.div`
     background: #4F44E2;
     color: #FFF;
     width: 118px;
+    cursor: pointer;
 
     /* Subtitle1 */
     font-size: 16px;

@@ -15,6 +15,7 @@ export const GetPhotoContainer = styled.div`
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
+    cursor: pointer;
 `
 
 export const Profile = styled.img`
@@ -38,6 +39,7 @@ export const TextContainer = styled.div`
     position:relative; 
     display:inline-block; 
     margin-bottom: 13.62vh;
+    cursor: pointer;
 `
 
 export const TextArea = styled.textarea`
@@ -50,6 +52,7 @@ export const TextArea = styled.textarea`
     background: #FFF;
     width: 100%;
     resize: none;
+    cursor: pointer;
     &::placeholder{
 		color: #C8C5D0;
         font-size: 14px;
@@ -58,6 +61,10 @@ export const TextArea = styled.textarea`
         line-height: normal;
         letter-spacing: 0.175px;
 	}
+    &:focus{
+        outline: none;
+        border: 2px solid #100069;
+    }
 `
 export const TextCount = styled.div`
     position:absolute; 
