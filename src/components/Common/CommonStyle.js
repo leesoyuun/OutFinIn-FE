@@ -26,7 +26,7 @@ export const SubScreen = styled.div`
 `;
 
 export const ScreenJoin = styled.div`
-  padding-top: ${(props)=>props.email ? '25px' : '13.86vh'};
+  padding-top: ${(props)=>props.email ? '90px' : '13.86vh'};
   display: flex;
   flex-direction: column;
 `
