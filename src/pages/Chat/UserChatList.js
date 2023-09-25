@@ -105,9 +105,11 @@ const UserChatList = () => {
           </ButtonContainer>
           {/* 채팅 목록 */}
           {chatRoomList?.map((list) => (
-            <Link to={`/chatroom/${list.room_id}/${list.coordinator[0].nickname}/${list.user[0].nickname}`}>
-              <UserInfo name={list.coordinator[0].nickname}
-                height={list.coordinator[0].height} weight={list.coordinator[0].weight} bodyshape={'스트레이트'}
+            <Link to={`/userchatroom/${list.room_id}/${list.user[0].nickname}/${list.coordinator[0].nickname}`}>
+              <UserInfo 
+                name={list.coordinator[0].nickname}
+                height={list.coordinator[0].height} 
+                weight={list.coordinator[0].weight} 
                 content={list.coordinator[0].content}>                 
               </UserInfo>
             </Link>

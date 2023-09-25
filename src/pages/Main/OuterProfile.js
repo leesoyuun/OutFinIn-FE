@@ -86,7 +86,7 @@ const OuterProfile = () => {
             "http://localhost:8080/coordinator/page?id=" + coordinator_id
           );
           setPage(res.data);
-          console.log(res.data);
+          console.log(res.data.sns_url);
         } catch (error) {
           console.error(error);
         }

@@ -6,6 +6,8 @@ import money from "../../assets/img/money.svg";
 import hanger from "../../assets/img/hanger.svg";
 
 const Grade = styled.div`
+    border-bottom: 1px solid #C8C5D0;
+    padding-bottom: 3px;
     display: flex;
     margin-bottom: 1.30vh;
     font-size: 12px;

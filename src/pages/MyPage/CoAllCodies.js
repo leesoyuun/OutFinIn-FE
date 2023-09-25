@@ -51,6 +51,28 @@ const PostImg=styled.img`
   border-radius: 18px;
   object-fit: cover;
 `
+const Postname = styled.div`
+  width: 150px;
+  color: #FFF;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const PostInfo=styled.div`
+  position: absolute;
+  left: 16px;
+  bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+`
 
 const CoAllCodies = () => {
   const [allCodies,setAllCodies] = useState([]);
@@ -80,9 +102,9 @@ const CoAllCodies = () => {
               <Link to={`/postdetail/${data.board_id}`}>
                 <PostContainer>
                   <PostImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.image_url} />
-                  <CategoryContainer>
-                    {/* 글 제목 넣기 */}
-                  </CategoryContainer> 
+                  <PostInfo>
+                    <Postname>{data.title}</Postname>
+                  </PostInfo>
                 </PostContainer>
               </Link>
             ))}
