@@ -50,6 +50,7 @@ const PostDetail = (props) => {
   const initialLikedPosts = {};
   const [post,setPost] = useState([]);
   const [likedPosts, setLikedPosts] = useState(initialLikedPosts);
+  const [like,setLike] = useState(false);
   const styleTag = [];
 
   let {board_id} = useParams();
@@ -61,7 +62,7 @@ const PostDetail = (props) => {
           "http://localhost:8080/board/show?id="+board_id
         );
         setPost(res.data);
-        console.log(res.data)
+        setLike(res.data.like_status);
       } catch (error) {
         console.error(error);
       }
@@ -98,17 +99,44 @@ const PostDetail = (props) => {
   //like function
   const [fillColor, setFillColor] = useState(heart);
 
-  const likeIncrease = (board_id) => {
-    setFillColor(fillColor === heart ? fillheart : heart);
+  useEffect(() => {
+    // if(post == null) return;
+    // if(post?.styles){
+    //   setSelectStyle(post.styles);
+    // }
+    // setLikeBoardId(post?.user_board_like);
+  }, [post])
+
+  const likeIncrease = (board_id, fillColor) => {
     async function fetchLike(){
       try{
           axios.defaults.withCredentials=true;
           const res = await axios.get("http://localhost:8080/user/like?boardId="+board_id);
+          setLike(true);
+
       }catch(error){
           console.error(error);
       }}
+  
+    async function fetchLikeCancel() {
+      try {
+        axios.defaults.withCredentials = true;
+        const res = await axios.get("http://localhost:8080/user/unlike?boardId="+board_id);
+        if(res.data == 'possible'){
+          console.log('possible')
+          setLike(false);      
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  
+    if (fillColor == fillheart) {
+      fetchLikeCancel();
+    } else {
       fetchLike();
-  }
+    }
+}
   
   // 게시물의 좋아요 상태를 토글하는 함수
   const toggleLike = (postId) => {
@@ -154,11 +182,11 @@ const PostDetail = (props) => {
             {post.content}
           </CoordinatorIntro>
           <CoordinatorMainImg boardImg={post.board_image}
-          likeIncrease={(e) => {
+          likeIncrease={(fillColor, e) => {
             e.preventDefault(); // 링크 이동을 막음
-            likeIncrease(board_id); // 하트 클릭 이벤트 처리
-            toggleLike(board_id);
-          }} fillColor={likedPosts[board_id] ? fillheart : heart}/>
+            likeIncrease(board_id, fillColor); // 하트 클릭 이벤트 처리
+          }}
+          fillColor={ like ? fillheart : heart}/>
           {/* Other Codi */}
           {/* <ReviewText>
             {post.nickname} 님의 다른 코디

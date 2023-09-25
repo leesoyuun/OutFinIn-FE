@@ -12,11 +12,12 @@ import CoordinatorMainImg from "../../components/MainPage/CoordinatorMainImg";
 import CoordinatorMainImg2 from "../../components/MainPage/CoordinatorMainImg2";
 import BottomSheet from "../../components/MainPage/BottomSheet";
 import smallFind from "../../assets/img/smallFind.svg";
-import goback from "../../assets/img/goback.svg";
 import grayHeart from "../../assets/img/grayHeart.svg";
 import grayStar from "../../assets/img/grayStar.svg";
 import grayMoney from "../../assets/img/grayMoney.svg";
 import grayHanger from "../../assets/img/grayHanger.svg";
+import heart from '../../assets/img/heart.svg';
+import fillheart from '../../assets/img/fillheart.svg';
 
 const MainText = styled.div`
   color: #000;
@@ -136,8 +137,8 @@ const Search = () => {
   ]);
 
   const [weatherCategories, setWeatherCategories] = useState([
-    ["봄 코디", "여름 코디"],
-    ["가을 코디", "겨울 코디"],
+    "봄 코디", "여름 코디",
+    "가을 코디", "겨울 코디",
   ]);
 
   const [situationCategories, setSituationCategories] = useState([
@@ -167,23 +168,68 @@ const Search = () => {
             situation : selectedSituation
           });
           setIsOpen(!isOpen);
-          
           setSearch(res.data);
-          console.log(res)
-          // arrstyles.push(res.data);
+
           setSelectedStyles([]);
           setSelectedWeather([]);
           setSelectedSituation([]);
-          arrstyles([]);
           setFirstPage(null);
         }catch(error){
-          console.error(error.data);
+          console.error(error);
         }
       }
       fetchCodiCheck();
     }
 
+      //like function
+      const [likeBoardId, setLikeBoardId] = useState([]);
+      const [selectStyle, setSelectStyle] = useState(search?.styles || []);
 
+      useEffect(() => {
+        if(search == null) return;
+        if(search?.styles){
+          setSelectStyle(search.styles);
+        }
+        setLikeBoardId(search?.user_board_like);
+      }, [search])
+
+      const likeIncrease = (board_id, fillColor) => {
+        console.log(board_id)
+        console.log(likeBoardId)
+        console.log(fillColor); 
+        async function fetchLike(){
+          try{
+              axios.defaults.withCredentials=true;
+              const res = await axios.get("http://localhost:8080/user/like?boardId="+board_id);
+              if(res.data == 'success'){
+                setLikeBoardId([...likeBoardId, board_id]);
+              }
+    
+          }catch(error){
+              console.error(error);
+          }}
+      
+        async function fetchLikeCancel() {
+          try {
+            axios.defaults.withCredentials = true;
+            const res = await axios.get("http://localhost:8080/user/unlike?boardId="+board_id);
+            if(res.data == 'possible'){
+              console.log('possible')
+              setLikeBoardId((oldValue) => {
+                return oldValue.filter((id) => id !== board_id)
+              });        
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      
+        if (fillColor == fillheart) {
+          fetchLikeCancel();
+        } else {
+          fetchLike();
+        }
+    }
     return (
       <f.Totalframe>
         <f.SubScreen>
@@ -191,11 +237,7 @@ const Search = () => {
             <GobackContainer />
             <SearchBox>
               <img src={smallFind}/>
-              <SearchInput placeholder="찾고있는 스타일이 있나요?" onClick={openBottomSheet}>
-                {/* {arrstyles?.map(style => (
-                  <SelectSearch>{style}</SelectSearch>
-                ))} */}
-              </SearchInput>
+              <SearchInput placeholder="찾고있는 스타일이 있나요?" onClick={openBottomSheet}/>
             </SearchBox>
             <Filters ref={containerRef}
               onMouseDown={handelMouseDownEvent}
@@ -211,7 +253,12 @@ const Search = () => {
             {firstPage?.map((data) => (
               <CoordinatorProfile>
               <Link to={`/postdetail/${data.board_id}`}>
-                <CoordinatorMainImg boardImg={data.board_image}/>
+              <CoordinatorMainImg boardImg={data.board_image}
+                likeIncrease={(fillColor, e) => {
+                  e.preventDefault(); // 링크 이동을 막음
+                  likeIncrease(data.board_id, fillColor); // 하트 클릭 이벤트 처리
+                }}
+                fillColor={likeBoardId.includes(data.board_id) ? fillheart : heart}/>
               </Link>
               <Link to={`/outerprofile/${data.coordinator_id}`}>
                 <CoordinatorInfo name={data.nickname} profileImg={data.profile_image} requestCnt={data.request_count}
@@ -226,7 +273,7 @@ const Search = () => {
             {search?.map((data)=>(
               <CoordinatorProfile>
               <Link to='/postdetail'>
-              <CoordinatorMainImg2 boardImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.boardImage}/>
+                <CoordinatorMainImg2 boardImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.boardImage}/>
               </Link>
               <Link to='/outerprofile'>
                 <CoordinatorInfo2 name={data.coornickname} profileImg={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+data.coorimageUrl} requestCnt={data.coorrequestCount}

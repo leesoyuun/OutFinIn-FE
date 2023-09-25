@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GetStyleBox from "../../components/Join/GetStyleBox";
 import XButton from "../../assets/img/X_button.svg";
@@ -128,7 +128,7 @@ function BottomSheet(props) {
           }
 
           else if(type === 'weather') {
-            props.setSelectedSituation([...props.selectedWeather, style]);
+            props.setSelectedWeather([...props.selectedWeather, style]);
           }
         }
     }   
@@ -148,6 +148,13 @@ function BottomSheet(props) {
       />
     ))
 
+    const weatherCategoryBoxes = props.weatherCategories.map((category) => (
+      <GetStyleBox
+        content={category}
+        isSelected={selectedStyles.includes(category)} onClick={() => handleStyleClick(category, 'weather')}
+      />
+    ))
+
     // 선택해제
     const resetCategories = () => {
       setSelectedStyles([])
@@ -164,17 +171,7 @@ function BottomSheet(props) {
             </ModalTitle>
             <Category>{styleCategoryBoxes}</Category>
             <Hr/>
-            {props.weatherCategories.map((categoryRow, rowIndex) => (
-                <div key={rowIndex}>
-                {categoryRow.map((category, index) => (
-                    <GetStyleBox
-                    key={index}
-                    content={category}
-                    isSelected={selectedStyles.includes(category)} onClick={() => handleStyleClick(category)}
-                    />
-                ))}
-                </div>
-            ))}
+            {weatherCategoryBoxes}
             <Hr/>
             {situationCategoryBoxes}
         </BottomSheetContent>

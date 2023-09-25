@@ -45,6 +45,8 @@ const UserMainPage = () => {
   const [likedPosts, setLikedPosts] = useState(initialLikedPosts);
   const [mainPage, setMainPage] = useState(null);
   const [selectStyle, setSelectStyle] = useState(mainPage?.styles || []);
+  const [filteredPosts, setFilteredPosts] = useState(mainPage?.pages || []);
+
 
   const containerRef = useRef(null);
 
@@ -66,9 +68,6 @@ const UserMainPage = () => {
       containerRef.current.scrollLeft = scrollLeft - walk;
     }
   }
-  const changeStyle = (style) => {
-    setSelectStyle(style);
-  }
 
   const openBottonSheet = () => {
     setIsOpen(true)
@@ -79,7 +78,8 @@ const UserMainPage = () => {
       try{
         axios.defaults.withCredentials=true;
         const res = await axios.get("http://localhost:8080/main/user");
-        setMainPage(res.data);
+        setMainPage(res.data);        
+        console.log(res.data)
       }catch(error){
         console.error(error);
       }
@@ -87,6 +87,27 @@ const UserMainPage = () => {
     fetchMainPage();
   }, [])
 
+  // filter function
+  const changeStyle = (style) => {
+    if (!style) {
+      // 스타일이 없는 경우, 모든 게시물을 보여줍니다.
+      setFilteredPosts(mainPage?.pages || []);
+    } else {
+      // 선택한 스타일에 해당하는 게시물만 필터링합니다.
+      const filtered = mainPage?.pages.filter((data) => data.styles.includes(style));
+      setFilteredPosts(filtered);
+    }
+    setSelectStyle(style);
+  }
+
+  useEffect(() => {
+  if (mainPage) {
+    let choiceStyle = mainPage?.styles || [];
+    const filtered = mainPage?.pages.filter((data) => data.styles.some(style => choiceStyle.includes(style)));
+    console.log(filtered);
+    setFilteredPosts(filtered);
+  }
+}, [mainPage]);
   //like function
   const [likeBoardId, setLikeBoardId] = useState([]);
 
@@ -154,7 +175,7 @@ const UserMainPage = () => {
             
           </HashTag>
           {/* 코디네이터 프로필 */}
-          {mainPage?.pages.map((data)=>(
+          {filteredPosts?.map((data)=>(
             <CoordinatorProfile>
               <Link to={`/postdetail/${data.board_id}`}>
                 <CoordinatorMainImg boardImg={data.board_image}
