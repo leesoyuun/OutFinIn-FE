@@ -31,6 +31,20 @@ const ReviewText = styled.div`
     margin-top: 4.26vh;
     margin-bottom: 1.77vh;
 `
+
+const CoordinatorTitle=styled.div`
+  padding-top: 11px;
+  margin-bottom: 11px;
+  width: 354px;
+  color: var(--material-theme-black, #000);
+  font-family: Noto Sans CJK KR;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.024px;
+`
+
 const PostDetail = (props) => {
   const [modal,setModal] = useState(false);
   const initialLikedPosts = {};
@@ -131,6 +145,11 @@ const PostDetail = (props) => {
           {/* 코디네이터 프로필 */}
           <CoordinatorInfo name={post.nickname} profileImg={post.profile_image} styles={styleTag} snsLink={post.sns_url} linkState={post.sns_url!==''}/>
           <Grades likeCnt={post.like_count} requestCnt={post.request_count}/>
+          {/* 글 제목 */}
+          <CoordinatorTitle>
+            {post.title}
+          </CoordinatorTitle>
+          {/* 글 설명 */}
           <CoordinatorIntro>
             {post.content}
           </CoordinatorIntro>

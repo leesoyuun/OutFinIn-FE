@@ -236,7 +236,7 @@ const InputEmail = () => {
   useEffect(() => {
     const modalHideTimer = setTimeout(() => {
       setModal(false);
-    }, 5000);
+    }, 3000);
 
     // 컴포넌트가 언마운트될 때 타이머를 클리어
     return () => clearTimeout(modalHideTimer);

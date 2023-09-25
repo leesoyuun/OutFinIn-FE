@@ -35,6 +35,7 @@ const PostInfo=styled.div`
 `
 
 const Name=styled.div`
+    width: 160px;
     color: #FFF;
     font-family: Noto Sans KR;
     font-size: 14px;
@@ -42,6 +43,8 @@ const Name=styled.div`
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 const CountContainer=styled.div`
@@ -76,10 +79,10 @@ const PostMainImg = (props) => {
             <Heart src={fillColor} onClick={ChangeColor}></Heart>
             <PostInfo>
                 <Name>{props.name}</Name>
-                <CountContainer>
+                {/* <CountContainer>
                     <LikeIcon src={whiteHeart}></LikeIcon>
-                    {/* <Count>{props.like}</Count> */}
-                </CountContainer>
+                    {/* <Count>{props.like}</Count> 
+                </CountContainer>*/}
             </PostInfo>
         </PostMainImgs>
     )

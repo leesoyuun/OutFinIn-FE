@@ -86,8 +86,11 @@ const MyPageDescribe = styled.div`
   cursor: pointer;
 `;
 const AccountBtns = styled.div`
+  width: 355px;
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  bottom: 120px;
 `;
 const AccountBox = styled.div`
   width: 100%;
@@ -106,7 +109,6 @@ const AccountBox = styled.div`
 // 소셜로그인
 const SocialInfoContainer=styled.div`
     margin-top: 23px;
-    margin-bottom: 21vh;
     display: flex;
     flex-direction: column;
     color: var(--material-theme-ref-neutral-neutral-80, #C9C5CA);

@@ -76,6 +76,9 @@ const MyPageDescribe = styled.div`
 const AccountBtns = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 355px;
+  position: fixed;
+  bottom: 120px;
 `;
 const AccountBox = styled.div`
   width: 100%;
@@ -162,7 +165,7 @@ const OuterMyPage = () => {
         <f.ScreenComponent>
           <GobackContainer />
           {/* 코디네이터 프로필 */}
-          <CoordinatorInfo name={outerMyPage.nickname} profileImg={outerMyPage.image_url} styles={outerMyPage.styles}/>
+          <CoordinatorInfo name={outerMyPage.nickname} profileImg={outerMyPage.image_url} styles={outerMyPage.styles} linkState={outerMyPage.sns_url!==''}/>
           <Grades likeCnt={outerMyPage.total_like} requestCnt={outerMyPage.request_count} />
           {/* 마이페이지 내용 */}
           <CoordinatorIntro>

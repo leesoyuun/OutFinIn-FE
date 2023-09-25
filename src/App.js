@@ -50,8 +50,8 @@ function App() {
             <Route path="/searchfilter" element={<SearchFilter />} />
             <Route path="/chatlist" element={<ChatList />} />
             <Route path="/userchatlist" element={<UserChatList />} />
-            <Route path="/chatroom" element={<ChatRoom/>}/>
-            <Route path="/userchatroom" element={<UserChatRoom/>}/>
+            <Route path="/chatroom/:chatRoomId/:myNickname/:otherNickname" element={<ChatRoom/>}/> {/* 추가 -준형 (chatRoomId 를 params 로 사용하기) */}
+            <Route path="/userchatroom/:chatRoomId/:myNickname/:otherNickname" element={<UserChatRoom/>}/>
             <Route path="/outermypage" element={<OuterMyPage />} />
             <Route path="/usermypage" element={<UserMyPage />} />
             <Route path="/editcoprofile" element={<EditCoProfile />} />

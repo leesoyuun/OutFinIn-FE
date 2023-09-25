@@ -38,20 +38,27 @@ const MainImg = styled.img`
   object-fit: cover;
 `;
 
+const PostInfo=styled.div`
+  position: absolute;
+  left: 16px;
+  bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+`
+
 const Postname = styled.div`
-    position: absolute;
-    z-index: 1;
-    bottom:22px;
-    left: 16px;
-    width: 77.4px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: 0.175px;
+  width: 150px;
+  color: #FFF;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const Heart = styled.img`
@@ -122,7 +129,9 @@ const LikeCodies = () => {
             {boardLike?.boards?.map((post) => (
                 <PostImg key={post.board_id}>
                     <MainImg src={"https://seumu-s3-bucket.s3.ap-northeast-2.amazonaws.com/"+post.image_url} />
-                    <Postname>{post.title}</Postname>
+                    <PostInfo>
+                      <Postname>{post.title}</Postname>
+                    </PostInfo>
                 <Heart src={boardLike.user_board_like.includes(post.board_id) ? fillheart : heart}
                 onClick={(e)=>likeIncrease(post.board_id,e)}
                 />
