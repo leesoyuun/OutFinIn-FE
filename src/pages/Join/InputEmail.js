@@ -232,6 +232,16 @@ const InputEmail = () => {
         return () => clearInterval(id);
     }, [timer]);
 
+  // 모달을 렌더링 후 3초 후에 모달 숨김
+  useEffect(() => {
+    const modalHideTimer = setTimeout(() => {
+      setModal(false);
+    }, 5000);
+
+    // 컴포넌트가 언마운트될 때 타이머를 클리어
+    return () => clearTimeout(modalHideTimer);
+  }, []);
+
     // 코드 확인 
     const inputCode = (e) => {
         let code = e.target.value
@@ -282,7 +292,7 @@ const InputEmail = () => {
         <f.Totalframe>
             <f.SubScreen>
                 <f.ScreenComponent>
-                    <TopModal show={modal}/>
+                    <TopModal show={modal} content={"이메일이 성공적으로 보내졌습니다."}/>
                     <f.ScreenJoin email={true}>
                         <QuestionMode content={'서비스 이용 시작 전\n본인인증이 필요합니다.'} marginBottom={'6.27vh'}/>
                         <f.Flex>

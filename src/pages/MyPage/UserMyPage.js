@@ -12,6 +12,13 @@ import Heart from "../../assets/img/mypage/heart.svg";
 import Hanger from "../../assets/img/mypage/hanger.svg";
 import Review from "../../assets/img/mypage/review.svg";
 import Outer from "../../assets/img/mypage/outer.svg";
+import naver from "../../assets/img/naver.svg"
+import kakao from "../../assets/img/kakao.svg"
+import google from "../../assets/img/google.svg"
+// 소셜로그인
+import {KAKAO_REGISTER_URL} from "../../LinkAuth/register/kakaoRegisterAuth.js";
+import {GOOGLE_REGISTER_URL} from "../../LinkAuth/register/googleRegisterAuth.js";
+import {NAVER_REGISTER_URL} from "../../LinkAuth/register/naverRegisterAuth.js";
 
 //주석
 const UserInfos = styled.div`
@@ -61,7 +68,7 @@ const MyPageMenu = styled.div`
   display: flex;
   height: 5.71vh;
   margin-top: ${(props) => (props.mycodi)? '2.13vh' : '0px'};
-  margin-bottom: ${(props)=>props.outer ? '25.63vh' : '0px' };
+  margin-bottom: ${(props)=>props.outer ? '17px' : '0px' };
   color: #000;
 `;
 const Icon = styled.img`
@@ -96,6 +103,35 @@ const AccountBox = styled.div`
   cursor: pointer;
 `;
 
+// 소셜로그인
+const SocialInfoContainer=styled.div`
+    margin-top: 23px;
+    margin-bottom: 21vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--material-theme-ref-neutral-neutral-80, #C9C5CA);
+    font-family: Noto Sans KR;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.048px;
+    text-align: center;
+`
+const SocialLogo=styled.div`
+    margin-top: 9px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: 7px;
+`
+
+const LogoImg=styled.div`
+    margin-right:2px;
+    width: 40px;
+    cursor: pointer;
+`
+
 const UserMyPage = () => {
   const [userMyPage,setUserMyPage] = useState('');
   const [bodyShape,setBodyShape] = useState('');
@@ -122,6 +158,7 @@ const UserMyPage = () => {
       try{
         axios.defaults.withCredentials=true;
         const res = await axios.post("http://localhost:8080/logout");
+        navigate('/');
       }catch(error){
         console.error(error);
         navigate('/');
@@ -170,6 +207,16 @@ const UserMyPage = () => {
                 </MyPageMenu>
               </Link>
             </UserInfos>
+            {/* 소셜미디어 연동 */}
+            <SocialInfoContainer>
+              <div>소셜 로그인 연동하기</div>
+                <SocialLogo>
+                    <LogoImg><a href={KAKAO_REGISTER_URL}><img src={kakao} /></a></LogoImg>
+                    <LogoImg><a href={NAVER_REGISTER_URL}><img src={naver} /></a></LogoImg>
+                    <LogoImg><a href={GOOGLE_REGISTER_URL}><img src={google} /></a></LogoImg>
+                </SocialLogo>
+            </SocialInfoContainer>
+            {/* 로그아웃, 계정삭제 버튼 */}
             <AccountBtns>
               <AccountBox logout onClick={clickLogOut}>로그아웃</AccountBox>
               <AccountBox delete>계정삭제</AccountBox>

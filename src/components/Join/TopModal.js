@@ -3,12 +3,14 @@ import styled from 'styled-components';
 
 const TotalModal = styled.div`
     visibility: ${(props)=>props.show ? 'visible' : 'hidden'};  
-    position: relative;
+    width: 355px;
+    position: fixed;
     top: 5vh;
     border-radius: 25px;
     padding: 21px 28px;
     background: #FFFBFF;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+    z-index:1;
 `;
 
 const ModalText = styled.div`
@@ -24,7 +26,7 @@ const TopModal = (props) => {
     return(
         <TotalModal show={props.show}>
             <ModalText>
-            이메일이 성공적으로 보내졌습니다.
+            {props.content}
             </ModalText>
         </TotalModal>
 

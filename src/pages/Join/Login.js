@@ -8,6 +8,10 @@ import naver from "../../assets/img/naver.svg"
 import kakao from "../../assets/img/kakao.svg"
 import google from "../../assets/img/google.svg"
 import axios from "axios";
+// 소셜로그인
+import { KAKAO_AUTH_URL } from "../../LinkAuth/kakaoAuth.js";
+import { NAVER_AUTH_URL } from "../../LinkAuth/NaverAuth.js";
+import { GOOGLE_AUTH_URL } from "../../LinkAuth/GoogleAuth.js"; 
  
 const LoginContainer=styled.div`
     margin-top: 87.33px;
@@ -167,9 +171,9 @@ const Login = () => {
                             <SocialInfoContainer>
                                 <div>소셜 로그인 연동하기</div>
                                 <SocialLogo>
-                                    <LogoImg><img src={naver} /></LogoImg>
-                                    <LogoImg><img src={kakao} /></LogoImg>
-                                    <LogoImg><img src={google} /></LogoImg>
+                                    <LogoImg><a href={NAVER_AUTH_URL}><img src={naver} /></a></LogoImg>
+                                    <LogoImg><a href={KAKAO_AUTH_URL}><img src={kakao} /></a></LogoImg>
+                                    <LogoImg><a href={GOOGLE_AUTH_URL}><img src={google} /></a></LogoImg>
                                 </SocialLogo>
                             </SocialInfoContainer>
                             {/* 회원가입 */}

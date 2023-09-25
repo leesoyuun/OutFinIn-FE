@@ -57,7 +57,7 @@ const Button=styled.div`
   cursor: pointer;
 `
 
-const ChatList = () => {
+const UserChatList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState('');
 
@@ -132,4 +132,4 @@ const ChatList = () => {
   );
 };
 
-export default ChatList;
+export default UserChatList;
